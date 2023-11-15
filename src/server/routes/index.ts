@@ -9,7 +9,4 @@ router.get('/', (_, res) => {
     return res.status(StatusCodes.OK).send('REST API appTT')
 }) 
 
-
-
-
 export { router }
