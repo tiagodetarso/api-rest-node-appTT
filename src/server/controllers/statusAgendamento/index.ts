@@ -5,7 +5,7 @@ import * as getById from './GetById'
 import * as updateById from './UpdateById'
 
 
-export const ClientesController = {
+export const StatusAgendamentoController = {
     ...create,
     ...deleteById,
     ...getAll,

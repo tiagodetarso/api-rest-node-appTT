@@ -1,3 +1,4 @@
+export * from './Pessoa'
 export * from './Cliente'
 export * from './Profissional'
 export * from './TituloProfissional'

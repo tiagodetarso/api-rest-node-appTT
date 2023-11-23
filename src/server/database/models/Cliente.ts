@@ -1,9 +1,8 @@
-import { IPessoa } from './Pessoa'
 
-export interface ICliente extends IPessoa{
+
+export interface ICliente{
     id: number
     idPessoa: number
     genderId: string
     dateOfBirth: Date
-    CPFNumber?: number
 }

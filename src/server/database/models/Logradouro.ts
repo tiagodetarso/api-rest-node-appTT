@@ -8,5 +8,5 @@ export interface ILogradouro {
     idPlaceType: number
     name: string
     number: number
-    neighborhood?: string
+    neighborhood?: string | undefined
 }

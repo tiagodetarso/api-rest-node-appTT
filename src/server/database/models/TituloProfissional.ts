@@ -3,5 +3,6 @@
 
 export interface ITituloProfissional {
     id: number
-    title: string
+    title: string | undefined
+    subtitle?: string | undefined
 }

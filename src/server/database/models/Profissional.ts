@@ -1,10 +1,9 @@
-import { IPessoa } from './Pessoa'
 
-export interface IProfissional extends IPessoa {
+
+
+export interface IProfissional {
     id: number
     idPessoa: number
-    idProfessionalTitle: number,
-    idDocumento:number,
-    documentNumber: number,
-    isActive: boolean,
+    idProfessionalTitle: number | number[]
+    isActive: boolean
 }

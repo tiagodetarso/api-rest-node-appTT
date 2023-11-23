@@ -1,9 +1,6 @@
 
-
-
 export interface IPessoa {
     id: number
-    idCity: number
     idPublicPlace: number
     name: string
     lastName: string
