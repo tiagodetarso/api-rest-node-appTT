@@ -10,7 +10,7 @@ interface IBodyProps extends Omit<ICliente, 'id'> {}
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
         idPessoa: yup.number().moreThan(0).required(),
-        genderId: yup.string().required(),
+        genderId: yup.string().optional(),
         dateOfBirth: yup.date().required(),
     }))
 }))
@@ -19,5 +19,7 @@ export const create = (req: Request<{},{},ICliente>, res: Response) => {
 
     console.log(req.body)
 
-    return res.status(StatusCodes.CREATED).send('Cliente cadastrado!')
+    const createdID = 1
+
+    return res.status(StatusCodes.CREATED).json({msg: 'Cliente cadastrado!', content: createdID})
 }

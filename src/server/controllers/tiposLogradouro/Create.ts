@@ -18,5 +18,7 @@ export const create = (req: Request<{},{},ITipoLogradouro>, res: Response) => {
 
     console.log(req.body)
 
-    return res.status(StatusCodes.CREATED).send('Título profissional cadastrado!')
+    const createdID = 1
+
+    return res.status(StatusCodes.CREATED).json({msg: 'Tipo de logradouro cadastrado!', content: createdID})
 }

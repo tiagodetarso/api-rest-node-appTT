@@ -3,6 +3,6 @@
 export interface ICliente{
     id: number
     idPessoa: number
-    genderId: string
+    genderId?: string | undefined
     dateOfBirth: Date
 }
