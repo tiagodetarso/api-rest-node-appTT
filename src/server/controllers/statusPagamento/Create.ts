@@ -18,5 +18,7 @@ export const create = (req: Request<{},{},IStatusPagamento>, res: Response) => {
 
     console.log(req.body)
 
-    return res.status(StatusCodes.CREATED).send('Status de pagamento cadastrado!')
+    const createdID = 1
+
+    return res.status(StatusCodes.CREATED).json({msg: 'Status de pagamento cadastrado!', content: createdID})
 }

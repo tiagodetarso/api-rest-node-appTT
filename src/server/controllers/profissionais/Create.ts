@@ -20,5 +20,7 @@ export const create = (req: Request<{},{},IProfissional>, res: Response) => {
 
     console.log(req.body)
 
-    return res.status(StatusCodes.CREATED).send('Profissional Cadastrado!')
+    const createdID = 1
+
+    return res.status(StatusCodes.CREATED).json({msg: 'Profissional Cadastrado!', content: createdID})
 }

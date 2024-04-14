@@ -96,11 +96,11 @@ router.get('./horarios/:id', HorariosController.getByIdValidation, HorariosContr
 router.put('./horarios/:id', HorariosController.updateByIdValidation, HorariosController.updateById)
 router.delete('./horarios/:id', HorariosController.deleteByIdValidation, HorariosController.deleteById)
 
-router.post('/statusAgendamento', StatusAgendamentoController.createValidation, StatusAgendamentoController.create)
-router.get('./statusAgendamento', StatusAgendamentoController.getAllValidation, StatusAgendamentoController.getAll)
-router.get('./statusAgendamento/:id', StatusAgendamentoController.getByIdValidation, StatusAgendamentoController.getById)
-router.put('./statusAgendamento/:id', StatusAgendamentoController.updateByIdValidation, StatusAgendamentoController.updateById)
-router.delete('./statusAgendamento/:id', StatusAgendamentoController.deleteByIdValidation, StatusAgendamentoController.deleteById)
+router.post('/statusagendamento', StatusAgendamentoController.createValidation, StatusAgendamentoController.create)
+router.get('./statusagendamento', StatusAgendamentoController.getAllValidation, StatusAgendamentoController.getAll)
+router.get('./statusagendamento/:id', StatusAgendamentoController.getByIdValidation, StatusAgendamentoController.getById)
+router.put('./statusagendamento/:id', StatusAgendamentoController.updateByIdValidation, StatusAgendamentoController.updateById)
+router.delete('./statusagendamento/:id', StatusAgendamentoController.deleteByIdValidation, StatusAgendamentoController.deleteById)
 
 router.post('/statuspagamento', StatusPagamentoController.createValidation, StatusPagamentoController.create)
 router.get('./statuspagamento', StatusPagamentoController.getAllValidation, StatusPagamentoController.getAll)

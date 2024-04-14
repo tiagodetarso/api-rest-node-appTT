@@ -21,5 +21,7 @@ export const create = (req: Request<{},{},IServicoPrestado>, res: Response) => {
 
     console.log(req.body)
 
-    return res.status(StatusCodes.CREATED).send('Serviço prestado cadastrado!')
+    const createdID = 1
+
+    return res.status(StatusCodes.CREATED).json({msg: 'Serviço prestado cadastrado!', content: createdID})
 }

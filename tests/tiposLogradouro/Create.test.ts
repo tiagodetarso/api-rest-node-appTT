@@ -5,7 +5,6 @@ import { testServer } from '../jest.setup'
 
 describe('Tipos de Logradouro - Create', () => {
 
-
     it('Criar registro', async () => {
 
         const resposta = await testServer.post('/tiposlogradouro')
@@ -17,4 +16,5 @@ describe('Tipos de Logradouro - Create', () => {
         expect(typeof resposta.body.msg).toEqual('string')
         expect(typeof resposta.body.content).toEqual('number')
     })
+    
 })

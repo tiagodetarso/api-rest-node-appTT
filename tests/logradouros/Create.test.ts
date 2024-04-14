@@ -2,12 +2,12 @@ import { StatusCodes } from 'http-status-codes'
 import { testServer } from '../jest.setup'
 
 
-
 describe('Logradouros - Create', () => {
 
+    let municipio: number | undefined = undefined
+    let tipoLogradouro: number | undefined = undefined
 
-    it('Criar registro', async () => {
-
+    beforeAll( async() => {
         //cria municipio
         const res1 = await testServer.post('/municipios')
             .send({
@@ -15,9 +15,7 @@ describe('Logradouros - Create', () => {
                 state: 'PR'
             })
 
-        expect(res1.statusCode).toEqual(StatusCodes.CREATED)
-        expect(typeof res1.body.msg).toEqual('string')
-        expect(typeof res1.body.content).toEqual('number')
+        municipio = res1.body.content
 
         //cria tipo de logradouro
         const res2 = await testServer.post('/tiposlogradouro')
@@ -25,15 +23,15 @@ describe('Logradouros - Create', () => {
                 type: 'Rua'
             })
         
-        expect(res2.statusCode).toEqual(StatusCodes.CREATED)
-        expect(typeof res2.body.msg).toEqual('string')
-        expect(typeof res2.body.content).toEqual('number')
+        tipoLogradouro = res2.body.content
+    })
 
-        //cria logradouro
+    it('Criar registro', async () => {
+
         const resposta = await testServer.post('/logradouros')
             .send({
-                idCity: res1.body.content,
-                idPlaceType: res2.body.content,
+                idCity: municipio,
+                idPlaceType: tipoLogradouro,
                 name: 'José Mendes Rodrigues',
                 number: 45,
                 neighborhood: 'Jardim Lice I'
@@ -43,4 +41,5 @@ describe('Logradouros - Create', () => {
         expect(typeof resposta.body.msg).toEqual('string')
         expect(typeof resposta.body.content).toEqual('number')
     })
+    
 })

@@ -18,5 +18,7 @@ export const create = (req: Request<{},{},ITipoDocumento>, res: Response) => {
 
     console.log(req.body)
 
-    return res.status(StatusCodes.CREATED).send('Tipo de documento cadastrado!')
+    const createdID = 1
+
+    return res.status(StatusCodes.CREATED).json({msg: 'Tipo de documento cadastrado!', content: createdID})
 }

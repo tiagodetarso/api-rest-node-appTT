@@ -2,15 +2,13 @@ import { StatusCodes } from 'http-status-codes'
 import { testServer } from '../jest.setup'
 
 
-
-describe('Municípios - Create', () => {
+describe('Tipos de Documento Profissional - Create', () => {
 
     it('Criar registro', async () => {
 
-        const resposta = await testServer.post('/municipios')
+        const resposta = await testServer.post('/tiposDocumento')
             .send({
-                name: 'Astorga',
-                state: 'PR'
+                documentName: 'Registro de Profissional Autônomo (RPA)',
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.CREATED)

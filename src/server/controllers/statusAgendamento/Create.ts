@@ -18,5 +18,7 @@ export const create = (req: Request<{},{},IStatusAgendamento>, res: Response) =>
 
     console.log(req.body)
 
-    return res.status(StatusCodes.CREATED).send('Status de agendamento cadastrado!')
+    const createdID = 1
+
+    return res.status(StatusCodes.CREATED).json({msg: 'Status de agendamento cadastrado!', content: createdID})
 }

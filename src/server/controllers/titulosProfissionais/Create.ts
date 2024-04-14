@@ -19,5 +19,7 @@ export const create = (req: Request<{},{},ITituloProfissional>, res: Response) =
 
     console.log(req.body)
 
-    return res.status(StatusCodes.CREATED).send('Título profissional cadastrado!')
+    const createdID = 1
+
+    return res.status(StatusCodes.CREATED).json({msg:'Título profissional cadastrado!', content: createdID})
 }

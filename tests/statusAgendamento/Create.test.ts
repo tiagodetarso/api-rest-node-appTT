@@ -2,15 +2,13 @@ import { StatusCodes } from 'http-status-codes'
 import { testServer } from '../jest.setup'
 
 
-
-describe('Municípios - Create', () => {
+describe('Status de Agendamento - Create', () => {
 
     it('Criar registro', async () => {
 
-        const resposta = await testServer.post('/municipios')
+        const resposta = await testServer.post('/statusagendamento')
             .send({
-                name: 'Astorga',
-                state: 'PR'
+                status: 'Solicitado pelo cliente',
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.CREATED)
