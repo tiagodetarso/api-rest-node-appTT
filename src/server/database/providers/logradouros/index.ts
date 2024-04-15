@@ -5,7 +5,7 @@ import * as deleteById from './DeleteById'
 import * as updateById from './UpdateById'
 import * as count from './Count'
 
-export const TiposLogradouroProvider = {
+export const LogradourosProvider = {
     ...create,
     ...getAll,
     ...getById,
