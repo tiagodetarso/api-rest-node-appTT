@@ -2,6 +2,7 @@ import { IAgendamento,
     ICliente,
     IHorario,
     ILogradouro,
+    IEndereco,
     IMunicipio,
     IPessoa,
     IProfissional,
@@ -20,6 +21,7 @@ declare module 'knex/types/tables' {
         cliente: ICliente
         horario: IHorario
         logradouro: ILogradouro
+        endereco: IEndereco
         municipio: IMunicipio
         pessoa: IPessoa
         profissional: IProfissional

@@ -3,19 +3,20 @@ import * as yup from 'yup'
 import { StatusCodes } from 'http-status-codes'
 
 import { validation } from '../../shared/middlewares'
-import { ILogradouro } from '../../database/models'
+import { IEndereco } from '../../database/models'
 
 interface IParamProps {
     id?: yup.Maybe<number | undefined>
 }
 
-interface IBodyProps extends Omit<ILogradouro, 'id'> { }
+interface IBodyProps extends Omit<IEndereco, 'id'> { }
 
 export const updateByIdValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        idCity: yup.number().moreThan(0).required(),
-        idPlaceType: yup.number().moreThan(0).required(),
-        name: yup.string().min(3).required()
+        idCity:yup.number().moreThan(0).required(),
+        idLogradouro: yup.number().moreThan(0).required(),
+        number: yup.number().moreThan(0).required(),
+        neighborhood: yup.string().min(3).optional()
     })),
     params: getSchema<IParamProps>(yup.object().shape({
         id: yup.number().required().moreThan(0).integer(),

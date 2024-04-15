@@ -11,9 +11,7 @@ export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
         idCity: yup.number().moreThan(0).required(),
         idPlaceType: yup.number().moreThan(0).required(),
-        name: yup.string().min(3).required(),
-        number: yup.number().moreThan(0).required(),
-        neighborhood: yup.string().min(3).optional()
+        name: yup.string().min(3).required()
     }))
 }))
 

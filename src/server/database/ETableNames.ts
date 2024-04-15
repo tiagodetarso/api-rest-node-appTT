@@ -3,6 +3,7 @@ export enum ETableNames {
     municipio = 'municipio',
     tipoLogradouro = 'tipoLogradouro',
     logradouro = 'logradouro',
+    endereco = 'endereco',
     pessoa = 'pessoa',
     cliente = 'cliente',
     profissional = 'profissional',
