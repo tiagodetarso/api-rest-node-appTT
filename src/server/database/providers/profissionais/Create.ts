@@ -6,7 +6,7 @@ import { Knex } from '../../knex'
 export const create = async (profissional: Omit<IProfissional, 'id'>): Promise<Number | Error> => {
     try {
         const [{count}] = await Knex(ETableNames.profissional)
-            .where('idPessoa', '=', `${profissional.idPessoa}`)
+            .where('idPessoa', '=', profissional.idPessoa)
             .andWhere('idProfessionalTitle', '=', profissional.idProfessionalTitle)
             .andWhere('isActive', '=', profissional.isActive)
             .count<[{ count: number }]>('* as count')

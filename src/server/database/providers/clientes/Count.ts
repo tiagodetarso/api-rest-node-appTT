@@ -4,7 +4,7 @@ import { Knex } from '../../knex'
 
 export const count = async (filterIdPessoa = 0, filterDateOfBirth = 0): Promise<number | Error> => {
     try {
-        const [{ count }] = await Knex(ETableNames.tipoLogradouro)
+        const [{ count }] = await Knex(ETableNames.cliente)
             .where('idPessoa', '=', filterIdPessoa)
             .andWhere('dateOfBirth', '=', filterDateOfBirth)
             .count<[{ count: number}]>('* as count')

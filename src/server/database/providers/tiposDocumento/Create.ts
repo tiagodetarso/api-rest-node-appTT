@@ -6,7 +6,7 @@ import { Knex } from '../../knex'
 export const create = async (tipoDocumento: Omit<ITipoDocumento, 'id'>): Promise<Number | Error> => {
     try {
         const [{count}] = await Knex(ETableNames.tipoDocumento)
-            .where('documentName', '=', tipoDocumento.documentName)
+            .where('documentName', '=', `${tipoDocumento.documentName}`)
             .count<[{ count: number }]>('* as count')
 
         if (count > 0) {
