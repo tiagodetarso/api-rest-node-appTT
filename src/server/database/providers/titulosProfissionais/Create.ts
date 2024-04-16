@@ -11,7 +11,7 @@ export const create = async (tituloProfissional: Omit<ITituloProfissional, 'id'>
             .count<[{ count: number }]>('* as count')
 
         if (count > 0) {
-            return new Error ('O tipo de logradouro já existe.')
+            return new Error ('O título profissional já está cadastrado no sistema.')
         }
 
         const [result] = await Knex(ETableNames.tituloProfissional)
