@@ -7,14 +7,18 @@ interface IQueryProps {
     id?: yup.Maybe<number | undefined>
     page?: yup.Maybe<number | undefined>
     limit?: yup.Maybe<number | undefined>
-    filter?: yup.Maybe<string | undefined>
+    filterIdPessoa?: yup.Maybe<number | undefined>
+    filterIdProfessionalTitle?: yup.Maybe<number | undefined>
+    filterIsActive?: yup.Maybe<boolean | undefined>
 }
 
 const querySchema = yup.object().shape({
     page: yup.number().notRequired().moreThan(0).integer(),
     limit: yup.number().notRequired().moreThan(0).integer(),
     id: yup.number().integer().notRequired().default(0),
-    filter: yup.string().notRequired().min(3)
+    filterIdPessoa: yup.number().notRequired().moreThan(0).integer(),
+    filterIdProfessionalTitle: yup.number().notRequired().moreThan(0).integer(),
+    filterIsActive: yup.boolean().notRequired()
 })
 
 export const getAllValidation = validation((getSchema) => ({
