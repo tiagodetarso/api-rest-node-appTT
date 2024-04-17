@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 
+import { TitulosProfissionaisProvider } from '../../database/providers/titulosProfissionais'
+import { validation } from '../../shared/middlewares'
 import { ITituloProfissional } from '../../database/models'
 
 
@@ -15,11 +16,17 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = (req: Request<{},{},ITituloProfissional>, res: Response) => {
+export const create = async (req: Request<{},{},ITituloProfissional>, res: Response) => {
 
-    console.log(req.body)
+    const result = await TitulosProfissionaisProvider.create(req.body)
+    
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                defatult: result.message
+            }
+        })
+    }
 
-    const createdID = 1
-
-    return res.status(StatusCodes.CREATED).json({msg:'Título profissional cadastrado!', content: createdID})
+    return res.status(StatusCodes.CREATED).json({msg:'Título profissional cadastrado!', content: result})
 }

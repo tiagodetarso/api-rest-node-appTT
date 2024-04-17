@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import * as yup from 'yup'
 import { StatusCodes } from 'http-status-codes'
 
+import { TitulosProfissionaisProvider } from '../../database/providers/titulosProfissionais'
 import { validation } from '../../shared/middlewares'
 import { ITituloProfissional } from '../../database/models'
 
@@ -30,5 +31,14 @@ export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res:
         })
     }
 
-    return res.status(StatusCodes.NO_CONTENT).send()
+    const result = await TitulosProfissionaisProvider.updateById(req.params.id, req.body)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json({msg: 'Registro Atualizado com sucesso!'})
 }
