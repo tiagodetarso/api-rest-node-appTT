@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 
+import { TiposLogradouroProvider } from '../../database/providers/tiposLogradouro'
+import { validation } from '../../shared/middlewares'
 import { ITipoLogradouro } from '../../database/models'
 
 
@@ -14,11 +15,16 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = (req: Request<{},{},ITipoLogradouro>, res: Response) => {
+export const create = async(req: Request<{},{},ITipoLogradouro>, res: Response) => {
 
-    console.log(req.body)
+    const result = await TiposLogradouroProvider.create(req.body)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
 
-    const createdID = 1
-
-    return res.status(StatusCodes.CREATED).json({msg: 'Tipo de logradouro cadastrado!', content: createdID})
+    return res.status(StatusCodes.CREATED).json({msg: 'Tipo de logradouro cadastrado', content: result})
 }

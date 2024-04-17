@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import * as yup from 'yup'
 import { StatusCodes } from 'http-status-codes'
 
+import { TiposLogradouroProvider } from '../../database/providers/tiposLogradouro'
 import { validation } from '../../shared/middlewares'
 import { ITipoLogradouro } from '../../database/models'
 
@@ -29,5 +30,14 @@ export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res:
         })
     }
 
-    return res.status(StatusCodes.NO_CONTENT).send()
+    const result = await TiposLogradouroProvider.updateById(req.params.id, req.body)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json({msg: 'Registro Atualizado com sucesso!'})
 }

@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
 
+import { TiposLogradouroProvider } from '../../database/providers/tiposLogradouro'
+import { validation } from '../../shared/middlewares'
 
 interface IParamProps {
     id?: number | undefined
@@ -23,5 +24,14 @@ export const getById = async (req: Request<IParamProps>, res: Response) => {
         })
     }
 
-    return res.status(StatusCodes.OK).send('Ok')
+    const result = await TiposLogradouroProvider.getById(req.params.id)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                defatul: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json(result)
 }
