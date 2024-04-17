@@ -1,12 +1,12 @@
 import { ETableNames } from '../../ETableNames'
 import { Knex } from '../../knex'
-import { ITipoLogradouro } from '../../models'
+import { ILogradouro } from '../../models'
 
 
-export const updateById = async (id:number, tipoLogradouro: Omit<ITipoLogradouro, 'id'>): Promise<void | Error> => {
+export const updateById = async (id:number, logradouro: Omit<ILogradouro, 'id'>): Promise<void | Error> => {
     try {
-        const result = await Knex(ETableNames.tipoLogradouro)
-            .update(tipoLogradouro)
+        const result = await Knex(ETableNames.logradouro)
+            .update(logradouro)
             .where('id', '=', id)
 
         if (result > 0)  return

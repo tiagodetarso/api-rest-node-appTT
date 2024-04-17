@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
+
+import { LogradourosProvider } from '../../database/providers/logradouros'
 import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
 
@@ -7,7 +9,7 @@ interface IQueryProps {
     id?: yup.Maybe<number | undefined>
     page?: yup.Maybe<number | undefined>
     limit?: yup.Maybe<number | undefined>
-    filterIdCity?: yup.Maybe<Number | undefined>
+    filterIdCity?: yup.Maybe<number | undefined>
     filterName?: yup.Maybe<string | undefined>
 }
 
@@ -25,7 +27,25 @@ export const getAllValidation = validation((getSchema) => ({
 
 export const getAll = async (req: Request<{},{},{}, IQueryProps>, res: Response) => {
 
-    console.log(req.query)
+    const result = await LogradourosProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filterName || '', req.query.filterIdCity || 0, Number(req.query.id))
+    const count = await LogradourosProvider.count(<string>req.query.filterName, <number>req.query.filterIdCity)
 
-    return res.status(StatusCodes.OK).send('Ok')
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    } else if (count instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: count.message
+            }
+        })
+    }
+
+    res.setHeader('access-control-expose-headers', 'x-total-count')
+    res.setHeader('x-total-count', count)
+
+    return res.status(StatusCodes.OK).json(result)
 }

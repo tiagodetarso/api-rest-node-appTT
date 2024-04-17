@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
+
+import { LogradourosProvider } from '../../database/providers/logradouros'
 import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
 
@@ -23,5 +25,14 @@ export const getById = async (req: Request<IParamProps>, res: Response) => {
         })
     }
 
-    return res.status(StatusCodes.OK).send('Ok')
+    const result = await LogradourosProvider.getById(req.params.id)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json(result)
 }
