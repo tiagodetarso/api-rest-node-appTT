@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
+
+import { ClientesProvider } from '../../database/providers/clientes'
+import { validation } from '../../shared/middlewares'
 
 
 interface IParamProps {
@@ -23,5 +25,14 @@ export const getById = async (req: Request<IParamProps>, res: Response) => {
         })
     }
 
-    return res.status(StatusCodes.OK).send('Ok')
+    const result = await ClientesProvider.getById(req.body)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json(result)
 }
