@@ -6,13 +6,11 @@ import { Knex } from '../../knex'
 export const create = async (pessoa: Omit<IPessoa, 'id'>): Promise<Number | Error> => {
     try {
         const [{count}] = await Knex(ETableNames.pessoa)
-            .where('name', '=', `${pessoa.name}`)
-            .andWhere('lastName', '=', `${pessoa.lastName}`)
-            .andWhere('email', '=', `${pessoa.email}`)
+            .where('email', '=', `${pessoa.email}`)
             .count<[{ count: number }]>('* as count')
 
         if (count > 0) {
-            return new Error ('Essa pessoa já está cadastrada.')
+            return new Error ('Uma pessoa já esta cadastrada com esse endereço de e-mail.')
         }
 
         const [result] = await Knex(ETableNames.pessoa)

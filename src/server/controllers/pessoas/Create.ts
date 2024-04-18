@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 
+import { PasswordCrypto } from '../../shared/services'
+import { PessoasProvider } from '../../database/providers/pessoas'
+import { validation } from '../../shared/middlewares'
 import { IPessoa } from '../../database/models'
 
 interface IBodyProps extends Omit<IPessoa, 'id'> {}
@@ -20,11 +22,28 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = (req: Request<{},{},IPessoa>, res: Response) => {
+export const create = async (req: Request<{},{},IPessoa>, res: Response) => {
 
-    console.log(req.body)
+    const hashedPassword = PasswordCrypto.hashPassword(req.body.password)
+    if (hashedPassword instanceof Error) {
+        return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
+            errors: {
+                default: 'Não foi possível criptografar a senha'
+            }
+        })
+    }
 
-    const createdID = 1
+    req.body.password = await hashedPassword
 
-    return res.status(StatusCodes.CREATED).json({msg: 'Pessoa cadastrada!', content: createdID})
+    const result = await PessoasProvider.create(req.body)
+    
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+    
+    return res.status(StatusCodes.CREATED).json({msg: 'Pessoa cadastrada!', content: result})
 }

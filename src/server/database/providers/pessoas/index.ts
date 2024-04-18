@@ -4,6 +4,8 @@ import * as getById from './GetById'
 import * as deleteById from './DeleteById'
 import * as updateById from './UpdateById'
 import * as count from './Count'
+import * as getByEmail from './GetByEmail'
+
 
 export const PessoasProvider = {
     ...create,
@@ -11,5 +13,6 @@ export const PessoasProvider = {
     ...getById,
     ...deleteById,
     ...updateById,
-    ...count
+    ...count,
+    ...getByEmail
 }
