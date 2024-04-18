@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 
+import { ProfissionaisProvider } from '../../database/providers/profissionais'
+import { validation } from '../../shared/middlewares'
 import { IProfissional } from '../../database/models'
 
 
@@ -16,11 +17,16 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = (req: Request<{},{},IProfissional>, res: Response) => {
+export const create = async (req: Request<{},{},IProfissional>, res: Response) => {
 
-    console.log(req.body)
+    const result = await ProfissionaisProvider.create(req.body)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
 
-    const createdID = 1
-
-    return res.status(StatusCodes.CREATED).json({msg: 'Profissional Cadastrado!', content: createdID})
+    return res.status(StatusCodes.CREATED).json({msg: 'Profissional Cadastrado!', content: result})
 }
