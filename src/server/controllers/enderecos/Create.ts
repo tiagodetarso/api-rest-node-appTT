@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 
+import { EnderecosProvider } from '../../database/providers/enderecos'
+import { validation } from '../../shared/middlewares'
 import { IEndereco } from '../../database/models'
 
 interface IBodyProps extends Omit<IEndereco, 'id'> {}
@@ -16,11 +17,16 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = (req: Request<{},{},IEndereco>, res: Response) => {
+export const create = async (req: Request<{},{},IEndereco>, res: Response) => {
 
-    console.log(req.body)
+    const result = await EnderecosProvider.create(req.body)
+    if ( result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
 
-    const createdID = 1
-
-    return res.status(StatusCodes.CREATED).json({msg: 'Endereco cadastrado!', content: createdID})
+    return res.status(StatusCodes.CREATED).json({msg: 'Endereco cadastrado!', content: result})
 }
