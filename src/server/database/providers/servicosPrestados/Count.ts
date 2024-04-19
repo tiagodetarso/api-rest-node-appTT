@@ -2,28 +2,32 @@ import { ETableNames } from '../../ETableNames'
 import { Knex } from '../../knex'
 
 
-export const count = async (filterIdCity = 0, filterNumber = 0, filterNeighborhood = ''): Promise<number | Error> => {
+export const count = async (filterIdServico = 0, filterIdProfessional = 0, filterLowerPrice = 0, filterHigherPrice = 5000): Promise<number | Error> => {
     try {
         let count
-        if (filterIdCity == 0 && filterNumber == 0 ) {
-            [{ count }] = await Knex(ETableNames.endereco)
-                .where( 'neighborhood', '=', `%${filterNeighborhood}%`)
+        if (filterIdServico == 0 && filterIdProfessional == 0 ) {
+            [{ count }] = await Knex(ETableNames.servicoPrestado)
+                .where( 'price', '>=', filterLowerPrice)
+                .andWhere( 'price', '<=', filterHigherPrice)
                 .count<[{ count: number}]>('* as count')
-        } else if (filterIdCity == 0){
-            [{ count }] = await Knex(ETableNames.endereco)
-                .where('number', 'like', filterNumber)
-                .andWhere( 'neighborhood', '=', `%${filterNeighborhood}%`)
+        } else if (filterIdServico == 0){
+            [{ count }] = await Knex(ETableNames.servicoPrestado)
+                .where( 'price', '>=', filterLowerPrice)
+                .andWhere( 'price', '<=', filterHigherPrice)
+                .andWhere('idProfessional', '=', filterIdProfessional)
                 .count<[{ count: number}]>('* as count')
-        } else if (filterNumber == 0){
-            [{ count }] = await Knex(ETableNames.endereco)
-                .where ('idCity', '=', filterIdCity)
-                .andWhere( 'neighborhood', '=', `%${filterNeighborhood}%`)
+        } else if (filterIdProfessional == 0){
+            [{ count }] = await Knex(ETableNames.servicoPrestado)
+                .where( 'price', '>=', filterLowerPrice)
+                .andWhere( 'price', '<=', filterHigherPrice)
+                .andWhere ('idServico', '=', filterIdServico)
                 .count<[{ count: number}]>('* as count')
         } else {
-            [{ count }] = await Knex(ETableNames.endereco)
-                .where ('idCity', '=', filterIdCity)
-                .andWhere('number', 'like', filterNumber)
-                .andWhere( 'neighborhood', '=', `%${filterNeighborhood}%`)
+            [{ count }] = await Knex(ETableNames.servicoPrestado)
+                .where( 'price', '>=', filterLowerPrice)
+                .andWhere( 'price', '<=', filterHigherPrice)
+                .andWhere ('idProfessional', '=', filterIdProfessional)
+                .andWhere('idServico', '=', filterIdServico)
                 .count<[{ count: number}]>('* as count')
         }
             

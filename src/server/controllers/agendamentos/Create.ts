@@ -9,7 +9,6 @@ interface IBodyProps extends Omit<IAgendamento, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        idProfessional: yup.number().moreThan(0).integer().required(),
         idClient: yup.number().moreThan(0).integer().required(),
         idHorario: yup.number().moreThan(0).integer().required(),
         idServicoPrestado: yup.number().moreThan(0).integer().required(),
