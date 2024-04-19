@@ -1,11 +1,11 @@
 import { Knex } from '../../knex'
 import { ETableNames } from '../../ETableNames'
-import { IEndereco } from '../../models'
+import { IServicoPrestado } from '../../models'
 
 
-export const getById = async (id:number): Promise<IEndereco | Error> => {
+export const getById = async (id:number): Promise<IServicoPrestado | Error> => {
     try {
-        const result = await Knex(ETableNames.endereco)
+        const result = await Knex(ETableNames.servicoPrestado)
             .select()
             .where('id', id)
             .first()
