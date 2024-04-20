@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
+
+import { StatusAgendamentoProvider } from '../../database/providers/statusAgendamentos'
+import { validation } from '../../shared/middlewares'
 
 interface IParamProps {
     id?: number | undefined
@@ -21,6 +23,17 @@ export const deleteById = async (req: Request<IParamProps>, res: Response) => {
             }
         })
     }
+
+    const result = await StatusAgendamentoProvider.deleteById(req.params.id)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json({msg: 'Registro apagado com sucesso!'})
 
     return res.status(StatusCodes.NO_CONTENT).send()
 }
