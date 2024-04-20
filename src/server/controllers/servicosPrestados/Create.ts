@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 
+import { ServicosPrestadosProvider } from '../../database/providers/servicosPrestados'
+import { validation } from '../../shared/middlewares'
 import { IServicoPrestado } from '../../database/models'
 
 
@@ -17,11 +18,16 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = (req: Request<{},{},IServicoPrestado>, res: Response) => {
+export const create = async (req: Request<{},{},IServicoPrestado>, res: Response) => {
 
-    console.log(req.body)
+    const result = await ServicosPrestadosProvider.create(req.body)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
 
-    const createdID = 1
-
-    return res.status(StatusCodes.CREATED).json({msg: 'Serviço prestado cadastrado!', content: createdID})
+    return res.status(StatusCodes.CREATED).json({msg: 'Serviço prestado cadastrado!', content: result})
 }
