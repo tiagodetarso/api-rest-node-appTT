@@ -8,8 +8,8 @@ describe('Títulos Profissionais - Create', () => {
 
         const resposta = await testServer.post('/titulosprofissionais')
             .send({
-                title: 'Cabeleireiro',
-                subtitle: 'Especializado em corte masculino'
+                title: 'Cabeleireiro Unisex',
+                subtitle: 'Corte de cabelo masculino e feminino'
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.CREATED)
@@ -22,7 +22,7 @@ describe('Títulos Profissionais - Create', () => {
         const resposta = await testServer.post('/titulosprofissionais')
             .send({
                 title: 'Ca',
-                subtitle: 'Especializado em corte masculino'
+                subtitle: 'Corte de cabelo masculino e feminino'
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)

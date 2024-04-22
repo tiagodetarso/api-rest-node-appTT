@@ -8,7 +8,7 @@ describe('Status de Agendamento - Create', () => {
 
         const resposta = await testServer.post('/statusagendamento')
             .send({
-                status: 'Solicitado pelo cliente',
+                status: 'Pré-agendaddo (pendente de confirmação do profissional)',
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.CREATED)

@@ -8,6 +8,8 @@ describe('Agendamentos - Create', () => {
     let tipoLogradouro: number | undefined = undefined
     let logradouro1: number | undefined = undefined
     let logradouro2: number | undefined = undefined
+    let endereco1: number | undefined = undefined
+    let endereco2: number | undefined = undefined
     let pessoa1: number | undefined = undefined
     let pessoa2: number | undefined = undefined
     let cliente: number | undefined = undefined
@@ -24,7 +26,7 @@ describe('Agendamentos - Create', () => {
         //cria municipio
         const res1 = await testServer.post('/municipios')
             .send({
-                name: 'Astorga',
+                name: 'Maringá',
                 state: 'PR'
             })
 
@@ -33,7 +35,7 @@ describe('Agendamentos - Create', () => {
         //cria tipo de logradouro
         const res2 = await testServer.post('/tiposlogradouro')
             .send({
-                type: 'Rua'
+                type: 'Avenida'
             })
         
         tipoLogradouro = res2.body.content
@@ -41,11 +43,8 @@ describe('Agendamentos - Create', () => {
         //cria logradouro do profissional
         const res3 = await testServer.post('/logradouros')
             .send({
-                idCity: municipio,
                 idPlaceType: tipoLogradouro,
-                name: 'José Mendes Rodrigues',
-                number: 45,
-                neighborhood: 'Jardim Lice I'
+                name: 'Pedro Taques'
             })
         
         logradouro1 = res3.body.content
@@ -53,121 +52,136 @@ describe('Agendamentos - Create', () => {
         //cria logradouro do cliente
         const res4 = await testServer.post('/logradouros')
             .send({
-                idCity: municipio,
                 idPlaceType: tipoLogradouro,
-                name: 'das Flores',
-                number: 157,
-                neighborhood: 'Centro'
+                name: 'Brasil',
             })
         
         logradouro2 = res4.body.content
 
-        //cria pessoa do profissional
-        const res5 = await testServer.post('/cadastrar')
+        const res5 = await testServer.post('/enderecos')
             .send({
                 idPublicPlace: logradouro1,
-                name: 'Tiago de Tarso',
-                lastName: 'Raggiotto Gonçalves',
-                email: 'ttrgoncalves@gmail.com',
-                phoneNumber: '(41) 9 9909-8911',
-                whatsappNumber: '(41) 9 9909-8911',
+                idCity: municipio,
+                number: 1455,
+                neighborhood: 'Zona 20'
+            })
+        
+        endereco1 = res5.body.content
+
+        const res6 = await testServer.post('/enderecos')
+            .send({
+                idPublicPlace: logradouro2,
+                idCity: municipio,
+                number: 2450,
+                neighborhood: 'Zona 05'
+            })
+        
+        endereco2 = res6.body.content
+
+        //cria pessoa do profissional
+        const res7 = await testServer.post('/cadastrar')
+            .send({
+                idAdress: endereco1,
+                name: 'José',
+                lastName: 'de Paula',
+                email: 'zepaula@gmail.com',
+                phoneNumber: '(41) 9 9999-0011',
+                whatsappNumber: '(41) 9 9999-0012',
                 registrationDate: new Date(),
                 password: '123abc',
             })
         
-        pessoa1 = res5.body.content
+        pessoa1 = res7.body.content
 
         //cria pessoa do cliente
-        const res6 = await testServer.post('/cadastrar')
+        const res8 = await testServer.post('/cadastrar')
             .send({
-                idPublicPlace: logradouro2,
-                name: 'Fulano',
-                lastName: 'de Tal',
-                email: 'fulano@narede.com.br',
+                idAdress: endereco2,
+                name: 'Cirano',
+                lastName: 'de Bergerac',
+                email: 'Cirgerac@narede.com.br',
                 phoneNumber: '(44) 3214-3333',
-                whatsappNumber: '(44) 9 9999-9999',
+                whatsappNumber: '(44) 9 9999-00013',
                 registrationDate: new Date(),
                 password: 'abc123',
             })
         
-        pessoa2 = res6.body.content
+        pessoa2 = res8.body.content
 
         //cria o título profissional
-        const res7 = await testServer.post('/titulosprofissionais')
+        const res9 = await testServer.post('/titulosprofissionais')
             .send({
-                title: 'Cabeleireiro',
-                subtitle: 'Especializado em corte masculino'
+                title: 'Médico',
+                subtitle: 'Generalista'
             })
         
-        tituloProfissional = res7.body.content
+        tituloProfissional = res9.body.content
 
         //cria o profissional
-        const res8 = await testServer.post('/profissionais')
+        const res10 = await testServer.post('/profissionais')
             .send({
                 idPessoa: pessoa1,
                 idProfessionalTitle: tituloProfissional,
                 isActive: true
             })
 
-        profissional = res8.body.content
+        profissional = res10.body.content
 
         //cria cliente
-        const res9 = await testServer.post('/clientes')
+        const res11 = await testServer.post('/clientes')
             .send({
                 idPessoa: pessoa2,
-                genderId: 'Homem Heterossexual',
+                genderId: 'Homem Cis',
                 dateOfBirth: new Date(1980, 5, 12)
             })
 
-        cliente = res9.body.content
+        cliente = res11.body.content
 
         //cria o horario
-        const res10 = await testServer.post('/horarios')
+        const res12 = await testServer.post('/horarios')
             .send({
                 idProfessional: profissional,
-                schedulingTime: new Date(2023, 10, 31),
+                schedulingTime: new Date(2024, 3, 23, 9, 0),
                 isAvaiable: true
             })
 
-        horario = res10.body.content
+        horario = res12.body.content
 
         //cria serviço
-        const res11 = await testServer.post('/servicos')
+        const res13 = await testServer.post('/servicos')
             .send({
-                name: 'Corte de Cabelo',
-                genericDescription: 'Corte de cabelo, de acordo com a preferência do cliente, ' 
-                    +'utiliando tecnicas especializadas, instrumentos de qualidade e produtos adequados. '
-                    +'Inclui lavagem.'
+                name: 'Consulta Médica',
+                genericDescription: 'CheckUp geral'
             })
         
-        servico = res11.body.content
+        servico = res13.body.content
 
         //cria o serviço prestado
-        const res12 = await testServer.post('/servicosprestados')
+        const res14 = await testServer.post('/servicosprestados')
             .send({
                 idServico: servico,
                 idProfessional: profissional,
                 specificDescription: 'Alguma particularidade do serviço prestado por este profissional',
-                price: 30,
+                price: 150
             })
         
-        servicoPrestado = res12.body.content
+        servicoPrestado = res14.body.content
 
         //cria o status de Pagamento
-        const res13 = await testServer.post('/statuspagamento')
+        const res15 = await testServer.post('/statuspagamento')
             .send({
-                status: 'Cobrado pelo profissional',
+                status: 'Serviço ainda não foi prestado',
             })
         
-        statusPagamento = res13.body.content
+        statusPagamento = res15.body.content
 
         // cria status
-        const res14 = await testServer.post('/statusagendamento')
+        const res16 = await testServer.post('/statusagendamento')
             .send({
-                status: 'Solicitado pelo cliente',
+                status: 'Agendamento confirmado pelo profissional',
             })
         
-        status = res14.body.content
+        status = res16.body.content
     })
 
     it('Criar registro', async () => {

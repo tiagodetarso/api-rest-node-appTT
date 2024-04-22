@@ -8,7 +8,7 @@ describe('Status de Pagamento - Create', () => {
 
         const resposta = await testServer.post('/statuspagamento')
             .send({
-                status: 'Cobrado pelo profissional',
+                status: 'Não pago',
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.CREATED)

@@ -16,5 +16,4 @@ describe('Tipos de Logradouro - Create', () => {
         expect(typeof resposta.body.msg).toEqual('string')
         expect(typeof resposta.body.content).toEqual('number')
     })
-    
 })

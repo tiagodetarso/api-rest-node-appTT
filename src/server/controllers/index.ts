@@ -2,6 +2,7 @@
 export * from './municipios'
 export * from './tiposLogradouro'
 export * from './logradouros'
+export * from './enderecos'
 export * from './pessoas'
 export * from './clientes'
 export * from  './profissionais'

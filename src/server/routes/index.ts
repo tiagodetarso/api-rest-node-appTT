@@ -5,6 +5,7 @@ import {
     MunicipiosController,
     TiposLogradouroController,
     LogradourosController,
+    EnderecosController,
     PessoasController,
     ClientesController,
     ProfissionaisController,
@@ -48,6 +49,12 @@ router.get('./logradouros', LogradourosController.getAllValidation, LogradourosC
 router.get('./logradouros/:id', LogradourosController.getByIdValidation, LogradourosController.getById)
 router.put('./logradouros/:id', LogradourosController.updateByIdValidation, LogradourosController.updateById)
 router.delete('./logradouros/:id', LogradourosController.deleteByIdValidation, LogradourosController.deleteById)
+
+router.post('/enderecos', EnderecosController.createValidation, EnderecosController.create)
+router.get('./enderecos', EnderecosController.getAllValidation, EnderecosController.getAll)
+router.get('./enderecos/:id', EnderecosController.getByIdValidation, EnderecosController.getById)
+router.put('./enderecos/:id', EnderecosController.updateByIdValidation, EnderecosController.updateById)
+router.delete('./enderecos/:id', EnderecosController.deleteByIdValidation, EnderecosController.deleteById)
 
 router.get('./pessoas', PessoasController.getAllValidation, PessoasController.getAll)
 router.get('./pessoas/:id', PessoasController.getByIdValidation, PessoasController.getById)

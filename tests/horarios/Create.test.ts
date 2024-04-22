@@ -7,6 +7,7 @@ describe('Profissionais - Create', () => {
     let municipio: number | undefined = undefined
     let tipoLogradouro: number | undefined = undefined
     let logradouro: number | undefined = undefined
+    let endereco: number | undefined = undefined
     let pessoa: number | undefined = undefined
     let tituloProfissional: number | undefined = undefined
     let profissional: number | undefined = undefined
@@ -15,7 +16,7 @@ describe('Profissionais - Create', () => {
         //cria municipio
         const res1 = await testServer.post('/municipios')
             .send({
-                name: 'Astorga',
+                name: 'Arapongas',
                 state: 'PR'
             })
 
@@ -24,7 +25,7 @@ describe('Profissionais - Create', () => {
         //cria tipo de logradouro
         const res2 = await testServer.post('/tiposlogradouro')
             .send({
-                type: 'Rua'
+                type: 'Estrada'
             })
         
         tipoLogradouro = res2.body.content
@@ -32,48 +33,55 @@ describe('Profissionais - Create', () => {
         //cria logradouro
         const res3 = await testServer.post('/logradouros')
             .send({
-                idCity: municipio,
                 idPlaceType: tipoLogradouro,
-                name: 'José Mendes Rodrigues',
-                number: 45,
-                neighborhood: 'Jardim Lice I'
+                name: 'das Esmeraldas',
             })
         
         logradouro = res3.body.content
 
-        //cria pessoa
-        const res4 = await testServer.post('/cadastrar')
+        const res4 = await testServer.post('/enderecos')
             .send({
                 idPublicPlace: logradouro,
-                name: 'Tiago de Tarso',
-                lastName: 'Raggiotto Gonçalves',
-                email: 'ttrgoncalves@gmail.com',
-                phoneNumber: '(41) 9 9909-8911',
-                whatsappNumber: '(41) 9 9909-8911',
+                idCity: municipio,
+                number: 368,
+                neighborhood: 'Vila Galo'
+            })
+        
+        endereco = res4.body.content
+
+        //cria pessoa do profissional
+        const res5 = await testServer.post('/cadastrar')
+            .send({
+                idAdress: endereco,
+                name: 'Ernesto',
+                lastName: 'Miranda',
+                email: 'ftal@gmail.com',
+                phoneNumber: '(41) 9 9999-0009',
+                whatsappNumber: '(41) 9 9999-0010',
                 registrationDate: new Date(),
                 password: '123abc',
             })
         
-        pessoa = res4.body.content
+        pessoa = res5.body.content
 
         //cria o título profissional
-        const res5 = await testServer.post('/titulosprofissionais')
+        const res6 = await testServer.post('/titulosprofissionais')
             .send({
-                title: 'Cabeleireiro',
-                subtitle: 'Especializado em corte masculino'
+                title: 'Psicólogo',
+                subtitle: 'Comportamental'
             })
         
-        tituloProfissional = res5.body.content
+        tituloProfissional = res6.body.content
 
         //cria o profissional
-        const res6 = await testServer.post('/profissionais')
+        const res7 = await testServer.post('/profissionais')
             .send({
                 idPessoa: pessoa,
                 idProfessionalTitle: tituloProfissional,
                 isActive: true
             })
-
-        profissional = res6.body.content
+        
+        profissional = res7.body.content
     })
 
     it('Criar registro', async () => {
@@ -81,7 +89,7 @@ describe('Profissionais - Create', () => {
         const resposta = await testServer.post('/horarios')
             .send({
                 idProfessional: profissional,
-                schedulingTime: new Date(2023, 10, 27, 8, 30),
+                schedulingTime: new Date(2024, 3, 22, 8, 0),
                 isAvaiable: true
             })
 

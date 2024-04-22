@@ -7,13 +7,14 @@ describe('Clientes - Create', () => {
     let municipio: number | undefined = undefined
     let tipoLogradouro: number | undefined = undefined
     let logradouro: number | undefined = undefined
+    let endereco: number | undefined = undefined
     let pessoa: number | undefined = undefined
 
     beforeAll( async() => {
         //cria municipio
         const res1 = await testServer.post('/municipios')
             .send({
-                name: 'Astorga',
+                name: 'Santa Fé',
                 state: 'PR'
             })
 
@@ -22,7 +23,7 @@ describe('Clientes - Create', () => {
         //cria tipo de logradouro
         const res2 = await testServer.post('/tiposlogradouro')
             .send({
-                type: 'Rua'
+                type: 'Praça'
             })
         
         tipoLogradouro = res2.body.content
@@ -30,19 +31,26 @@ describe('Clientes - Create', () => {
         //cria logradouro
         const res3 = await testServer.post('/logradouros')
             .send({
-                idCity: municipio,
                 idPlaceType: tipoLogradouro,
-                name: 'José Mendes Rodrigues',
-                number: 45,
-                neighborhood: 'Jardim Lice I'
+                name: 'das Nações',
             })
         
         logradouro = res3.body.content
 
-        //cria pessoa
-        const res4 = await testServer.post('/cadastrar')
+        const res4 = await testServer.post('/enderecos')
             .send({
                 idPublicPlace: logradouro,
+                idCity: municipio,
+                number: 75,
+                neighborhood: 'Conjunto Habitacional Dona Flor'
+            })
+        
+        endereco = res4.body.content
+
+        //cria pessoa
+        const res5 = await testServer.post('/cadastrar')
+            .send({
+                idAdress: endereco,
                 name: 'Tiago de Tarso',
                 lastName: 'Raggiotto Gonçalves',
                 email: 'ttrgoncalves@gmail.com',
@@ -52,8 +60,7 @@ describe('Clientes - Create', () => {
                 password: '123abc',
             })
         
-        pessoa = res4.body.content
-
+        pessoa = res5.body.content
     })
 
     it('Criar registro', async () => {

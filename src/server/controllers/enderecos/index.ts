@@ -5,7 +5,7 @@ import * as getById from './GetById'
 import * as updateById from './UpdateById'
 
 
-export const EndrecosController = {
+export const EnderecosController = {
     ...create,
     ...deleteById,
     ...getAll,
