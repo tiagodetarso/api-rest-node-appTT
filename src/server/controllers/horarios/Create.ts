@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 
+import { validation } from '../../shared/middlewares'
 import { IHorario } from '../../database/models'
+import { HorariosProvider } from '../../database/providers/horarios/index'
 
 
 interface IBodyProps extends Omit<IHorario, 'id'> {}
@@ -16,11 +17,17 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = (req: Request<{},{},IHorario>, res: Response) => {
+export const create = async (req: Request<{},{},IHorario>, res: Response) => {
 
-    console.log(req.body)
+    const result = await HorariosProvider.create(req.body)
 
-    const createdID = 1
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
 
-    return res.status(StatusCodes.CREATED).json({msg: 'Município cadastrado!', content: createdID})
+    return res.status(StatusCodes.CREATED).json({msg: 'Horário disponibilizado!', content: result})
 }

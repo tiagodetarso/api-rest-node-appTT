@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
-import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
+
+import { HorariosProvider } from '../../database/providers/horarios'
+import { validation } from '../../shared/middlewares'
 
 interface IQueryProps {
     id?: yup.Maybe<number | undefined>
@@ -17,7 +19,7 @@ const querySchema = yup.object().shape({
     limit: yup.number().notRequired().moreThan(0).integer(),
     id: yup.number().integer().notRequired().default(0),
     filterIdProfessional: yup.number().notRequired().moreThan(0).integer(),
-    filterSchedulingTime: yup.date().notRequired().default(new Date(1983,6,16)),
+    filterSchedulingTime: yup.date().notRequired(),
     filterIsAvaiable: yup.boolean()
 })
 
@@ -27,7 +29,25 @@ export const getAllValidation = validation((getSchema) => ({
 
 export const getAll = async (req: Request<{},{},{}, IQueryProps>, res: Response) => {
 
-    console.log(req.query)
+    const result = await HorariosProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filterIdProfessional || 0, req.query.filterSchedulingTime || new Date(1983,6,16), req.query.filterIsAvaiable || true, Number(req.query.id))
+    const count = await HorariosProvider.count(<number>req.query.filterIdProfessional, <Date>req.query.filterSchedulingTime, <boolean>req.query.filterIsAvaiable)
 
-    return res.status(StatusCodes.OK).send('Ok')
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    } else if (count instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: count.message
+            }
+        })
+    }
+
+    res.setHeader('access-control-expose-headers', 'x-total-count')
+    res.setHeader('x-total-count', count)
+
+    return res.status(StatusCodes.OK).json(result)
 }

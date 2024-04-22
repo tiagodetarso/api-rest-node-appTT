@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import * as yup from 'yup'
 import { StatusCodes } from 'http-status-codes'
 
+import { HorariosProvider } from '../../database/providers/horarios'
 import { validation } from '../../shared/middlewares'
 import { IHorario } from '../../database/models'
 
@@ -31,5 +32,14 @@ export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res:
         })
     }
 
-    return res.status(StatusCodes.NO_CONTENT).send()
+    const result = await HorariosProvider.updateById(req.params.id, req.body)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json({msg: 'Registro atualizado com sucesso!'})
 }
