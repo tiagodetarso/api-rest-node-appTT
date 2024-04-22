@@ -4,6 +4,7 @@ import * as yup from 'yup'
 import { validation } from '../../shared/middlewares'
 
 import { IAgendamento } from '../../database/models'
+import { AgendamentosProvider } from '../../database/providers/agendamentos'
 
 interface IBodyProps extends Omit<IAgendamento, 'id'> {}
 
@@ -18,11 +19,16 @@ export const createValidation = validation((getSchema) => ({
     }))
 }))
 
-export const create = (req: Request<{},{},IAgendamento>, res: Response) => {
+export const create = async (req: Request<{},{},IAgendamento>, res: Response) => {
 
-    console.log(req.body)
+    const result = await AgendamentosProvider.create(req.body)
+    if (result instanceof Error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        })
+    }
 
-    const createdID = 1
-
-    return res.status(StatusCodes.CREATED).json({msg:'Pessoa cadastrado!', content: createdID})
+    return res.status(StatusCodes.CREATED).json({msg:'Agendamento realizado!', content: result})
 }
