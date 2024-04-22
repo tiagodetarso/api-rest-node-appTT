@@ -12,7 +12,7 @@ export const create = async (agendamento: Omit<IAgendamento, 'id'>): Promise<Num
 
 
         if (count > 0) {
-            return new Error ('Este agendament.')
+            return new Error ('Este agendamento já consta no sistema.')
         }
 
         const [result] = await Knex(ETableNames.agendamento)

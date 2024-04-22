@@ -6,7 +6,7 @@ import { Knex } from '../../knex'
 export const create = async (tipoLogradouro: Omit<ITipoLogradouro, 'id'>): Promise<Number | Error> => {
     try {
         const [{count}] = await Knex(ETableNames.tipoLogradouro)
-            .where('type', '=', `${tipoLogradouro.type}`)
+            .where('type', '=', tipoLogradouro.type)
             .count<[{ count: number }]>('* as count')
 
         if (count > 0) {
