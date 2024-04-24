@@ -11,7 +11,7 @@ describe('Tipos de Logradouro - DeleteById', () => {
         const respostaCreate = await testServer
             .post('/tiposlogradouro')
             .send({
-                type: 'Rua'
+                type: 'Avenida'
             })
         
         tipoLogradouro = respostaCreate.body.content
@@ -34,6 +34,7 @@ describe('Tipos de Logradouro - DeleteById', () => {
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
     })
 
     it('Tenta apagar registro sem req.params.id', async() => {
@@ -55,7 +56,25 @@ describe('Tipos de Logradouro - DeleteById', () => {
 
     it('Tenta apagar registro com req.params.id igual a zero', async() => {
         const resposta = await testServer
-            .delete(`/tiposlogradouro/${0}`)
+            .delete('/tiposlogradouro/0')
+            .send()
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.params.id')
+    })
+
+    it('Tenta apagar registro com req.params.id não inteiro com ponto', async() => {
+        const resposta = await testServer
+            .delete('/tiposlogradouro/1.1')
+            .send()
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.params.id')
+    })
+
+    it('Tenta apagar registro com req.params.id não inteiro com vírgula', async() => {
+        const resposta = await testServer
+            .delete('/tiposlogradouro/1,1')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)

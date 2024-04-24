@@ -3,8 +3,7 @@ import { testServer } from '../jest.setup'
 
 
 describe('Tipos de Logradouro - Create', () => {
-
-    
+   
 
     it('Criar registro', async () => {
 
