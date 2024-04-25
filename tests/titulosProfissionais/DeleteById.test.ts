@@ -2,24 +2,25 @@ import { StatusCodes } from 'http-status-codes'
 
 import { testServer } from '../jest.setup'
 
-describe('Tipos de Logradouro - DeleteById', () => {
+describe('Titulo Profissional - DeleteById', () => {
 
-    let tipoLogradouro: number | undefined = undefined
+    let tituloProfissional: number | undefined = undefined
 
     beforeAll(async () => {
 
         const respostaCreate = await testServer
-            .post('/tiposlogradouro')
+            .post('/titulosprofissionais')
             .send({
-                type: 'Avenida'
+                title: 'Designer de Sombrancelhas',
+                subtitle: 'Modelagem, definição e harmonização de sombrancelhas'
             })
         
-        tipoLogradouro = respostaCreate.body.content
+        tituloProfissional = respostaCreate.body.content
     })
 
     it('Apaga registro', async() => {
         const resposta = await testServer
-            .delete(`/tiposlogradouro/${tipoLogradouro}`)
+            .delete(`/titulosprofissionais/${tituloProfissional}`)
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.OK)
@@ -29,7 +30,7 @@ describe('Tipos de Logradouro - DeleteById', () => {
 
     it('Tenta apagar registro inexistente', async() => {
         const resposta = await testServer
-            .delete(`/tiposlogradouro/${999}`)
+            .delete(`/titulosprofissionais/${999}`)
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -38,7 +39,7 @@ describe('Tipos de Logradouro - DeleteById', () => {
 
     it('Tenta apagar registro sem req.params.id', async() => {
         const resposta = await testServer
-            .delete('/tiposlogradouro')
+            .delete('/titulosprofissionais')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.NOT_FOUND)
@@ -46,7 +47,7 @@ describe('Tipos de Logradouro - DeleteById', () => {
 
     it('Tenta apagar registro com req.params.id do tipo string', async() => {
         const resposta = await testServer
-            .delete('/tiposlogradouro/a')
+            .delete('/titulosprofissionais/a')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
@@ -55,7 +56,7 @@ describe('Tipos de Logradouro - DeleteById', () => {
 
     it('Tenta apagar registro com req.params.id igual a zero', async() => {
         const resposta = await testServer
-            .delete('/tiposlogradouro/0')
+            .delete('/titulosprofissionais/0')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
@@ -64,7 +65,7 @@ describe('Tipos de Logradouro - DeleteById', () => {
 
     it('Tenta apagar registro com req.params.id não inteiro com ponto', async() => {
         const resposta = await testServer
-            .delete('/tiposlogradouro/1.1')
+            .delete('/titulosprofissionais/1.1')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
@@ -73,7 +74,7 @@ describe('Tipos de Logradouro - DeleteById', () => {
 
     it('Tenta apagar registro com req.params.id não inteiro com vírgula', async() => {
         const resposta = await testServer
-            .delete('/tiposlogradouro/1,1')
+            .delete('/titulosprofissionais/1,1')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)

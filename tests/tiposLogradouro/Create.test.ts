@@ -9,7 +9,7 @@ describe('Tipos de Logradouro - Create', () => {
 
         const resposta = await testServer.post('/tiposlogradouro')
             .send({
-                type: 'Rua'
+                type: 'Aeroporto'
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.CREATED)
@@ -22,6 +22,17 @@ describe('Tipos de Logradouro - Create', () => {
         const resposta = await testServer.post('/tiposlogradouro')
             .send({
                 type: 'Ru'
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.body.type')
+    })
+
+    it('Tenta criar registro com type de mais de 50 caracteres', async () => {
+
+        const resposta = await testServer.post('/tiposlogradouro')
+            .send({
+                type: 'Acesso de Marginal de Rodovia que antes era estrada'
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)

@@ -2,26 +2,30 @@ import { StatusCodes } from 'http-status-codes'
 import { testServer } from '../jest.setup'
 
 
-describe('Tipos de Logradouro - UpdateById', () =>{
+describe('Titulos Profissionais - UpdateById', () =>{
 
-    let tipoLogradouro: number | undefined = undefined
+    let tituloProfissional: number | undefined = undefined
 
     beforeAll(async() => {
         const respostaCreate = await testServer
-            .post('/tiposlogradouro')
+            .post('/titulosprofissionais')
             .send({
-                type: 'Estrada'
+                title: 'Médico',
+                subtitle: 'Clinico Geral'
             })
         
-        tipoLogradouro= respostaCreate.body.content
+        tituloProfissional= respostaCreate.body.content
         console.log(respostaCreate.body)
     })
 
     it('Atualiza registro', async() => {
 
         const resposta = await testServer
-            .put(`/tiposlogradouro/${tipoLogradouro}`)
-            .send({type: 'Praça'})
+            .put(`/titulosprofissionais/${tituloProfissional}`)
+            .send({
+                title: 'Médico Clinico Geral',
+                subtitle: 'Plantonista'
+            })
         
         expect(resposta.statusCode).toEqual(StatusCodes.OK)
         expect(resposta.body).toHaveProperty('msg')
@@ -29,38 +33,49 @@ describe('Tipos de Logradouro - UpdateById', () =>{
 
 
         const resVerificar = await testServer
-            .get(`/tiposlogradouro/${tipoLogradouro}`)
+            .get(`/titulosprofissionais/${tituloProfissional}`)
             .send()
         
         expect(resVerificar.statusCode).toEqual(StatusCodes.OK)
-        expect(resVerificar.body.type).toEqual('Praça')
+        expect(resVerificar.body.title).toEqual('Médico Clinico Geral')
+        expect(resVerificar.body.subtitle).toEqual('Plantonista')
     })
 
     it('Tenta atualizar registro que não existe', async() => {
 
         const resposta = await testServer
-            .put('/tiposlogradouro/999')
-            .send({type: 'Estrada'})
+            .put('/titulosprofissionais/999')
+            .send({
+                title: 'Médico Clinico Geral',
+                subtitle: 'Plantonista'
+            })
         
         expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
         expect(resposta.body).toHaveProperty('errors.default')
     })
 
-    it('Tenta atualizar registro com type contendo menos de três caracteres', async() => {
+    it('Tenta atualizar registro com title e subtitle contendo menos de três caracteres', async() => {
 
         const resposta = await testServer
-            .put(`/tiposlogradouro/${tipoLogradouro}`)
-            .send({type: 'Pr'})
+            .put(`/titulosprofissionais/${tituloProfissional}`)
+            .send({
+                title: 'Mé',
+                subtitle: 'Ci'
+            })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(resposta.body).toHaveProperty('errors.body.type')
+        expect(resposta.body).toHaveProperty('errors.body.title')
+        expect(resposta.body).toHaveProperty('errors.body.subtitle')
     })
 
     it('Tenta atualizar registro com id igual a zero', async() => {
 
         const resposta = await testServer
-            .put('/tiposlogradouro/0')
-            .send({type: 'Estrada'})
+            .put('/titulosprofissionais/0')
+            .send({
+                title: 'Médico Clinico Geral',
+                subtitle: 'Plantonista'
+            })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
         expect(resposta.body).toHaveProperty('errors.params.id')
@@ -69,8 +84,11 @@ describe('Tipos de Logradouro - UpdateById', () =>{
     it('Tenta atualizar registro sem id', async() => {
 
         const resposta = await testServer
-            .put('/tiposlogradouro')
-            .send({type: 'Estrada'})
+            .put('/titulosprofissionais')
+            .send({
+                title: 'Médico Clinico Geral',
+                subtitle: 'Plantonista'
+            })
         
         expect(resposta.statusCode).toEqual(StatusCodes.NOT_FOUND)
     })
@@ -78,8 +96,11 @@ describe('Tipos de Logradouro - UpdateById', () =>{
     it('Tenta atualizar registro com id não inteiro com ponto', async() => {
 
         const resposta = await testServer
-            .put('/tiposlogradouro/1.1')
-            .send({type: 'Estrada'})
+            .put('/titulosprofissionais/1.1')
+            .send({
+                title: 'Médico Clinico Geral',
+                subtitle: 'Plantonista'
+            })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
         expect(resposta.body).toHaveProperty('errors.params.id')
@@ -88,8 +109,11 @@ describe('Tipos de Logradouro - UpdateById', () =>{
     it('Tenta atualizar registro com id não inteiro com vírgula', async() => {
 
         const resposta = await testServer
-            .put('/tiposlogradouro/1,1')
-            .send({type: 'Estrada'})
+            .put('/titulosprofissionais/1,1')
+            .send({
+                title: 'Médico Clinico Geral',
+                subtitle: 'Plantonista'
+            })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
         expect(resposta.body).toHaveProperty('errors.params.id')

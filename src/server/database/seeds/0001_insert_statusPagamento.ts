@@ -18,5 +18,6 @@ const statusPagamento = [
     'Pago (profissional confirma o pagamento antecipado)',
     'Cliente indica o pagamento',
     'Pago (profissional confirma o pagamento)',
-    'Profissional indica a falta de pagamento'
+    'Profissional indica a falta de pagamento',
+    'Pago pelo aplicativo'
 ]

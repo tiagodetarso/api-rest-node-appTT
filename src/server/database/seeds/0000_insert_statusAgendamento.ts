@@ -13,7 +13,7 @@ export const seed = async(knex: Knex) => {
 }
 
 const statusAgendamento = [
-    'Agendado (aguardando aceite)',
+    'Agendado (aguardando aceite do profissional)',
     'Agendamento cancelado pelo profissional',
     'Agendado (confirmado pelo profissional)',
     'Agendamento cancelado pelo cliente',

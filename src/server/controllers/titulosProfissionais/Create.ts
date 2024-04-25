@@ -11,8 +11,8 @@ interface IBodyProps extends Omit<ITituloProfissional, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        title: yup.string().min(3).max(50).required(),
-        subtitle: yup.string().min(3).max(75).optional()
+        title: yup.string().min(3).max(100).required(),
+        subtitle: yup.string().min(3).max(300).optional()
     }))
 }))
 

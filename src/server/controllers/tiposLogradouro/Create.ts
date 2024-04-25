@@ -11,7 +11,7 @@ interface IBodyProps extends Omit<ITipoLogradouro, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        type: yup.string().min(3).required(),
+        type: yup.string().min(3).max(50).required(),
     }))
 }))
 
