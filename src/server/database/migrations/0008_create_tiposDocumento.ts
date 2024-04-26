@@ -8,7 +8,7 @@ export async function up(knex: Knex) {
         .schema
         .createTable(ETableNames.tipoDocumento, table => {
             table.bigIncrements('id').primary().index()
-            table.string('documentName', 100).checkLength('<=', 100).index().notNullable()
+            table.string('documentName', 50).checkLength('<=', 50).index().notNullable()
 
             table.comment('Tabela usada para armazenar os títulos profissionais.')
         })

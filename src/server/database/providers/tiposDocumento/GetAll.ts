@@ -6,7 +6,7 @@ export const getAll = async (page: number, limit: number, filter: string, id=0):
     try {
         const result = await Knex(ETableNames.tipoDocumento)
             .select('*')
-            .where ('type', 'like', `%${filter}%`)
+            .where ('documentName', 'like', `%${filter}%`)
             .offset((page - 1) * limit)
             .limit(limit)
 
