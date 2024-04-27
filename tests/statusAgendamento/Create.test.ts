@@ -8,7 +8,7 @@ describe('Status de Agendamento - Create', () => {
 
         const resposta = await testServer.post('/statusagendamento')
             .send({
-                status: 'Pré-agendaddo (pendente de confirmação do profissional)',
+                status: 'Agendado (aguardando aceite do profissional)',
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.CREATED)
@@ -16,4 +16,34 @@ describe('Status de Agendamento - Create', () => {
         expect(typeof resposta.body.content).toEqual('number')
     })
     
+    it('Tenta criar registro com status de menos de três caracteres', async () => {
+
+        const resposta = await testServer.post('/statusagendamento')
+            .send({
+                status: 'Ag'
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.body.status')
+    })
+
+    it('Tenta criar registro com status de mais de 75 caracteres', async () => {
+
+        const resposta = await testServer.post('/statusagendamento')
+            .send({
+                status: 'Cliente tentou agendar e o profissional tentou confirmar o agendamento, porém tudo deu errado'
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.body.status')
+    })
+
+    it('Tenta criar registro vazio', async () => {
+
+        const resposta = await testServer.post('/statusagendamento')
+            .send({})
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.body.status')
+    })
 })

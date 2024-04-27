@@ -6,7 +6,7 @@ export const getAll = async (page: number, limit: number, filter: string, id=0):
     try {
         const result = await Knex(ETableNames.statusAgendamento)
             .select('*')
-            .where ('type', 'like', `%${filter}%`)
+            .where ('status', 'like', `%${filter}%`)
             .offset((page - 1) * limit)
             .limit(limit)
 

@@ -11,7 +11,7 @@ interface IBodyProps extends Omit<IStatusAgendamento, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        status: yup.string().min(3).required(),
+        status: yup.string().min(3).max(75).required(),
     }))
 }))
 

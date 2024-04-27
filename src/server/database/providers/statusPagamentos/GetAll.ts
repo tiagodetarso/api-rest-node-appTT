@@ -1,6 +1,6 @@
 import { ETableNames } from '../../ETableNames'
 import { Knex } from '../../knex'
-import { IStatusPagamento } from '../../models'
+import { IStatusPagamento} from '../../models'
 
 export const getAll = async (page: number, limit: number, filter: string, id=0): Promise<IStatusPagamento[] | Error> => {
     try {
