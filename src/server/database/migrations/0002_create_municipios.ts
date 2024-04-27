@@ -8,7 +8,7 @@ export async function up(knex: Knex) {
         .schema
         .createTable(ETableNames.municipio, table => {
             table.bigIncrements('id').primary().index()
-            table.string('name', 100).checkLength('<=', 100).index().notNullable()
+            table.string('name', 75).checkLength('<=', 75).index().notNullable()
             table.string('state', 2).checkLength('=', 2).index().notNullable()
 
             table.comment('Tabela usada para armazenar os municípios com seus respectivos estados.')
