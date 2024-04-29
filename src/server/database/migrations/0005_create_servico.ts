@@ -8,8 +8,8 @@ export async function up(knex: Knex) {
         .schema
         .createTable(ETableNames.servico, table => {
             table.bigIncrements('id').primary().index()
-            table.string('name', 80).checkLength('<=', 80).index().notNullable()
-            table.string('genericDescription', 300).checkLength('<=', 300).index().notNullable()
+            table.string('name', 75).checkLength('<=', 75).index().notNullable()
+            table.string('genericDescription', 200).checkLength('<=', 200).index().notNullable()
 
             table.comment('Tabela usada para armazenar os títulos profissionais.')
         })

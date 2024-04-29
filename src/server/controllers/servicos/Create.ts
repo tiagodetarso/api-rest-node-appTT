@@ -11,7 +11,7 @@ interface IBodyProps extends Omit<IServico, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        name: yup.string().min(3).required(),
+        name: yup.string().min(3).max(75).required(),
         genericDescription: yup.string().min(5).max(200).required()
     }))
 }))
