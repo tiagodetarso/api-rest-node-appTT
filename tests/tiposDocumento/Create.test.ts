@@ -16,6 +16,17 @@ describe('Tipos de Documento Profissional - Create', () => {
         expect(typeof resposta.body.content).toEqual('number')
     })
 
+    it('Tenta criar registro já cadastrado', async () => {
+
+        const resposta = await testServer.post('/tiposdocumento')
+            .send({
+                documentName: 'RPA - Registro Profissional de Autônomo',
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
+    })
+
     it('Tenta criar registro com documentName de menos de três caracteres', async () => {
 
         const resposta = await testServer.post('/tiposdocumento')

@@ -17,6 +17,17 @@ describe('Tipos de Logradouro - Create', () => {
         expect(typeof resposta.body.content).toEqual('number')
     })
 
+    it('Tenta criar registro já existente', async () => {
+
+        const resposta = await testServer.post('/tiposlogradouro')
+            .send({
+                type: 'Aeroporto'
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
+    })
+
     it('Tenta criar registro com type de menos de três caracteres', async () => {
 
         const resposta = await testServer.post('/tiposlogradouro')

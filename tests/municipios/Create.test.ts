@@ -18,6 +18,18 @@ describe('Municípios - Create', () => {
         expect(typeof resposta.body.content).toEqual('number')
     })
 
+    it('Tenta criar município já cadastrado', async () => {
+
+        const resposta = await testServer.post('/municipios')
+            .send({
+                name: 'Astorga',
+                state: 'PR'
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
+    })
+
     it('Tenta criar um registro com name com menos de 3 caracteres', async () => {
 
         const resposta = await testServer.post('/municipios')

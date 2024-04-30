@@ -29,6 +29,18 @@ describe('Títulos Profissionais - Create', () => {
         expect(resposta.body).toHaveProperty('errors.body.title')
     })
 
+    it('Tenta criar um registro já existente', async () => {
+
+        const resposta = await testServer.post('/titulosprofissionais')
+            .send({
+                title: 'Cabeleireiro Unisex',
+                subtitle: 'Corte de cabelo masculino e feminino'
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
+    })
+
     it('Tenta criar um registro com titulo com mais de 100 caracteres', async () => {
 
         const resposta = await testServer.post('/titulosprofissionais')

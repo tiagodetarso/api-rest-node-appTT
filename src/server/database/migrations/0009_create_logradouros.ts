@@ -8,7 +8,7 @@ export async function up(knex: Knex) {
         .schema
         .createTable(ETableNames.logradouro, table => {
             table.bigIncrements('id').primary().index()
-            table.string('name', 100).checkLength('<=', 100).index().notNullable()
+            table.string('name', 75).checkLength('<=', 75).index().notNullable()
 
             table.bigInteger('idCity').index().notNullable()
                 .references('id').inTable(ETableNames.municipio)

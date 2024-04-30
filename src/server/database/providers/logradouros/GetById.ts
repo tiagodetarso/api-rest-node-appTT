@@ -1,13 +1,13 @@
 import { Knex } from '../../knex'
 import { ETableNames } from '../../ETableNames'
-import { ITipoLogradouro } from '../../models'
+import { ILogradouro } from '../../models'
 
 
-export const getById = async (id:number): Promise<ITipoLogradouro | Error> => {
+export const getById = async (id:number): Promise<ILogradouro | Error> => {
     try {
-        const result = await Knex(ETableNames.tipoLogradouro)
+        const result = await Knex(ETableNames.logradouro)
             .select()
-            .where('id', id)
+            .where('id', '=', id)
             .first()
 
         if (result) return result

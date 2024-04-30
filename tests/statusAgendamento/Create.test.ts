@@ -15,6 +15,17 @@ describe('Status de Agendamento - Create', () => {
         expect(typeof resposta.body.msg).toEqual('string')
         expect(typeof resposta.body.content).toEqual('number')
     })
+
+    it('Tenta criar registro ja cadastrado', async () => {
+
+        const resposta = await testServer.post('/statusagendamento')
+            .send({
+                status: 'Agendado (aguardando aceite do profissional)',
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
+    })
     
     it('Tenta criar registro com status de menos de três caracteres', async () => {
 

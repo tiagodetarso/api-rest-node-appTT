@@ -5,16 +5,16 @@ import { ILogradouro } from '../../models'
 export const getAll = async (page: number, limit: number, filterName: string, filterIdCity: number, id=0): Promise<ILogradouro[] | Error> => {
     try {
         let result
-        if (filterIdCity == 0){
+        if (filterIdCity === 0){
             result = await Knex(ETableNames.logradouro)
                 .select('*')
-                .where('idCity', '=', `${filterIdCity}` ) 
+                .where ('name', 'like', `%${filterName}%`)
                 .offset((page - 1) * limit)
                 .limit(limit)
         } else {
             result = await Knex(ETableNames.logradouro)
                 .select('*')
-                .where('idCity', '=', `${filterIdCity}` ) 
+                .where('idCity', '=', filterIdCity ) 
                 .andWhere ('name', 'like', `%${filterName}%`)
                 .offset((page - 1) * limit)
                 .limit(limit)

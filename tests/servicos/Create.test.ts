@@ -16,6 +16,18 @@ describe('Serviços - Create', () => {
         expect(typeof resposta.body.msg).toEqual('string')
         expect(typeof resposta.body.content).toEqual('number')
     })
+
+    it('Tenta criar registro já cadastrado', async () => {
+
+        const resposta = await testServer.post('/servicos')
+            .send({
+                name: 'Corte de Cabelo',
+                genericDescription: 'Corte, estilização, lavagem, secagem e acabamento'
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
+    })
     
     it('Tenta criar um registro com name tendo menos de 3 caracteres', async () => {
 

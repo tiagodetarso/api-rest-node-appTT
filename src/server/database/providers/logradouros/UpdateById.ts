@@ -6,8 +6,8 @@ import { ILogradouro } from '../../models'
 export const updateById = async (id:number, logradouro: Omit<ILogradouro, 'id'>): Promise<void | Error> => {
     try {
         const result = await Knex(ETableNames.logradouro)
-            .update(logradouro)
             .where('id', '=', id)
+            .update(logradouro)
 
         if (result > 0)  return
         

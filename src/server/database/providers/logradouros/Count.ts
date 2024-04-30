@@ -5,7 +5,7 @@ import { Knex } from '../../knex'
 export const count = async (filterName = '', filterIdCity=0): Promise<number | Error> => {
     try {
         let count
-        if (filterIdCity == 0) {
+        if (filterIdCity === 0) {
             [{ count }] = await Knex(ETableNames.logradouro)
                 .where('name', 'like', `%${filterName}%`)
                 .count<[{ count: number}]>('* as count')
