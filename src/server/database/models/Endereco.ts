@@ -3,8 +3,7 @@
 
 export interface IEndereco {
     id: number
-    idCity: number
-    idLogradouro: number
+    idPublicPlace: number
     number: number
     neighborhood?: string | undefined
 }

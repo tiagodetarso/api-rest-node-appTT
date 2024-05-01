@@ -10,10 +10,9 @@ interface IBodyProps extends Omit<IEndereco, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        idCity: yup.number().moreThan(0).required(),
-        idLogradouro: yup.number().moreThan(0).required(),
+        idPublicPlace: yup.number().moreThan(0).required(),
         number: yup.number().moreThan(0).required(),
-        neighborhood: yup.string().min(3).optional()
+        neighborhood: yup.string().min(3).max(75).optional()
     }))
 }))
 
