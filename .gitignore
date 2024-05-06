@@ -1,6 +1,10 @@
 /node_modules
 yarn-error.log
 
+jest.config.ts
+
+memory
+
 /build
 /coverage
 
