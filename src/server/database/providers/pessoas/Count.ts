@@ -2,11 +2,11 @@ import { ETableNames } from '../../ETableNames'
 import { Knex } from '../../knex'
 
 
-export const count = async (filterName = '', filterLastName = '', filterEmail: '', filterPhoneNumber: '', filterWhatsappNumber: ''): Promise<number | Error> => {
+export const count = async (filterName = '', filterLastName = '', filterEmail = '', filterPhoneNumber = '', filterWhatsappNumber = ''): Promise<number | Error> => {
     try {
         const [{ count }] = await Knex(ETableNames.pessoa)
             .where('name', 'like', `%${filterName}%`)
-            .andWhere('LastName', 'like', `%${filterLastName}%`)
+            .andWhere('lastName', 'like', `%${filterLastName}%`)
             .andWhere('email', 'like', `%${filterEmail}%`)
             .andWhere('phoneNumber', 'like', `%${filterPhoneNumber}%`)
             .andWhere('whatsappNumber', 'like', `%${filterWhatsappNumber}%`)

@@ -1,13 +1,13 @@
 
 export interface IPessoa {
     id: number
-    idPublicPlace: number
+    idAdress: number
     name: string
     lastName: string
     email: string
     phoneNumber?: string
     whatsappNumber:string
-    registrationDate: Date
+    registrationDate: string
     password: string
 }
 

@@ -11,14 +11,14 @@ interface IBodyProps extends Omit<IPessoa, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        idPublicPlace: yup.number().moreThan(0).required(),
-        name: yup.string().min(3).max(75).required(),
-        lastName: yup.string().min(3).max(75).required(),
+        idAdress: yup.number().moreThan(0).required(),
+        name: yup.string().min(3).max(80).required(),
+        lastName: yup.string().min(3).max(80).required(),
         email: yup.string().email().min(8).required(),
-        phoneNumber: yup.string().optional(),
-        whatsappNumber: yup.string().min(10).required(),
-        registrationDate: yup.date().required(),
-        password: yup.string().min(6).max(12).required(),
+        phoneNumber: yup.string().min(10).max(16).optional(),
+        whatsappNumber: yup.string().min(10).max(16).required(),
+        registrationDate: yup.string().required(),
+        password: yup.string().min(4).max(20).required(),
     }))
 }))
 
@@ -33,7 +33,7 @@ export const create = async (req: Request<{},{},IPessoa>, res: Response) => {
         })
     }
 
-    req.body.password = await hashedPassword
+    req.body.password = String(hashedPassword)
 
     const result = await PessoasProvider.create(req.body)
     
