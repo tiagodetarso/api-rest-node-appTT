@@ -10,15 +10,17 @@ interface IQueryProps {
     page?: yup.Maybe<number | undefined>
     limit?: yup.Maybe<number | undefined>
     filterIdPessoa?: yup.Maybe<number | undefined>
-    filterDateOfBirth?: yup.Maybe<Date | undefined>
+    filterDateOfBirthLowerLimit?: yup.Maybe<number | undefined>
+    filterDateOfBirthHigherLimit?: yup.Maybe<number | undefined>
 }
 
 const querySchema = yup.object().shape({
     page: yup.number().notRequired().moreThan(0).integer(),
     limit: yup.number().notRequired().moreThan(0).integer(),
     id: yup.number().integer().notRequired().default(0),
-    filterIdPessoa: yup.number().notRequired().integer(),
-    filterDateOfBirth: yup.date().notRequired().default(new Date(1983, 6, 16))
+    filterIdPessoa: yup.number().moreThan(0).notRequired().integer(),
+    filterDateOfBirthLowerLimit: yup.number().moreThan(0).notRequired(),
+    filterDateOfBirthHigherLimit: yup.number().moreThan(0).notRequired()
 })
 
 export const getAllValidation = validation((getSchema) => ({
@@ -27,8 +29,8 @@ export const getAllValidation = validation((getSchema) => ({
 
 export const getAll = async (req: Request<{},{},{}, IQueryProps>, res: Response) => {
 
-    const result = await ClientesProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filterIdPessoa || 0, req.query.filterDateOfBirth || new Date(1983, 6, 16), Number(req.query.id))
-    const count = await ClientesProvider.count(<number>req.query.filterIdPessoa, <Date>req.query.filterDateOfBirth)
+    const result = await ClientesProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filterIdPessoa || 0, req.query.filterDateOfBirthLowerLimit || 0, req.query.filterDateOfBirthHigherLimit || 0, Number(req.query.id))
+    const count = await ClientesProvider.count(<number>req.query.filterIdPessoa, <number>req.query.filterDateOfBirthLowerLimit, <number>req.query.filterDateOfBirthHigherLimit)
 
     if (result instanceof Error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

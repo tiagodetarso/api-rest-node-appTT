@@ -17,7 +17,7 @@ export const createValidation = validation((getSchema) => ({
         email: yup.string().email().min(8).required(),
         phoneNumber: yup.string().min(10).max(16).optional(),
         whatsappNumber: yup.string().min(10).max(16).required(),
-        registrationDate: yup.string().required(),
+        registrationDate: yup.number().integer().moreThan(0).required(),
         password: yup.string().min(4).max(20).required(),
     }))
 }))

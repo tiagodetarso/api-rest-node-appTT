@@ -1,58 +1,63 @@
 import { StatusCodes } from 'http-status-codes'
+
 import { testServer } from '../jest.setup'
 
-
-describe('Enderecos - GetById', () =>{
+describe('Enderecos - DeleteById', () => {
 
     let municipio: number | undefined = undefined
     let tipoLogradouro: number | undefined = undefined
     let logradouro: number | undefined = undefined
     let endereco: number | undefined = undefined
     let pessoa: number | undefined = undefined
+    let cliente: number | undefined = undefined
 
     beforeAll( async() => {
         //cria municipio
         const res1 = await testServer.post('/municipios')
             .send({
-                name: 'Rolândia',
+                name: 'Pitangueiras',
                 state: 'PR'
             })
 
         municipio = res1.body.content
+        console.log(municipio)
 
         //cria tipo de logradouro
         const res2 = await testServer.post('/tiposlogradouro')
             .send({
-                type: 'Avenida'
+                type: 'Rodovia'
             })
         
         tipoLogradouro = res2.body.content
+        console.log(municipio)
 
         //cria logradouro
         const res3 = await testServer.post('/logradouros')
             .send({
                 idPlaceType: tipoLogradouro,
                 idCity: municipio,
-                name: 'Rolinha',
+                name: 'PR-111',
             })
         
         logradouro = res3.body.content
+        console.log(logradouro)
 
         const res4 = await testServer.post('/enderecos')
             .send({
                 idPublicPlace: logradouro,
-                number: 1500,
-                neighborhood: 'Centro'
+                number: 15,
+                neighborhood: 'Vila Rural'
             })
         
         endereco = res4.body.content
+        console.log(endereco)
 
         const res5 = await testServer.post('/cadastrar')
             .send({
                 idAdress: endereco,
-                name: 'Cicrano',
-                lastName: 'Biricutico',
-                email: 'cicracutico@gmail.com',
+                name: 'Fulano',
+                lastName: 'de Tal',
+                email: 'fudetal@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
                 registrationDate: Date.parse(new Date().toString()),
@@ -60,72 +65,85 @@ describe('Enderecos - GetById', () =>{
             })
 
         pessoa = res5.body.content
+        console.log(pessoa)
+
+        const res6 = await testServer.post('/clientes')
+            .send({
+                idPessoa: pessoa,
+                genderId: 'Homem Heterossexual',
+                dateOfBirth: Date.parse(new Date(1983, 8, 16).toString())
+            })
+        
+        cliente = res6.body.content
+        console.log(cliente)
     })
 
-    it('Pesquisa registro por id', async() => {
+    it('Apaga registro', async() => {
         const resposta = await testServer
-            .get(`/pessoas/${pessoa}`)
+            .delete(`/clientes/${cliente}`)
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.OK)
-        expect(resposta.body).toHaveProperty('idAdress')
-        expect(resposta.body).toHaveProperty('name')
-        expect(resposta.body).toHaveProperty('lastName')
-        expect(resposta.body).toHaveProperty('email')
-        expect(resposta.body).toHaveProperty('phoneNumber')
-        expect(resposta.body).toHaveProperty('whatsappNumber')
-        expect(resposta.body).toHaveProperty('registrationDate')
-        expect(resposta.body).toHaveProperty('password')
+        expect(resposta.body).toHaveProperty('msg')
+        expect(typeof(resposta.body.msg)).toEqual('string')
     })
 
-    it('Tenta pesquisar registro inexistente', async() => {
+    it('Tenta apagar registro inexistente', async() => {
         const resposta = await testServer
-            .get('/pessoas/999')
+            .delete('/clientes/999')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
-        expect(resposta.body).toHaveProperty('errors')
+        expect(resposta.body).toHaveProperty('errors.default')
     })
 
-    it('Tenta pesquisar registro com id=0', async() => {
+    it('Tenta apagar registro sem req.params.id', async() => {
         const resposta = await testServer
-            .get('/pessoas/0')
+            .delete('/clientes')
+            .send()
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.NOT_FOUND)
+    })
+
+    it('Tenta apagar registro com req.params.id do tipo string', async() => {
+        const resposta = await testServer
+            .delete('/clientes/a')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
         expect(resposta.body).toHaveProperty('errors.params.id')
     })
 
-    it('Tenta pesquisar registro com id sendo uma string', async() => {
+    it('Tenta apagar registro com req.params.id igual a zero', async() => {
         const resposta = await testServer
-            .get('/pessoas/x')
+            .delete('/clientes/0')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
         expect(resposta.body).toHaveProperty('errors.params.id')
     })
 
-    it('Tenta pesquisar registro com id sendo não inteiro com ponto', async() => {
+    it('Tenta apagar registro com req.params.id não inteiro com ponto', async() => {
         const resposta = await testServer
-            .get('/pessoas/1.1')
+            .delete('/clientes/1.1')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
         expect(resposta.body).toHaveProperty('errors.params.id')
     })
 
-    it('Tenta pesquisar registro com id sendo não inteiro com vírgula', async() => {
+    it('Tenta apagar registro com req.params.id não inteiro com vírgula', async() => {
         const resposta = await testServer
-            .get('/pessoas/1,1')
+            .delete('/clientes/1,1')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
         expect(resposta.body).toHaveProperty('errors.params.id')
     })
 
-    it('Tenta pesquisar registro com id sendo negativo', async() => {
+    it('Tenta apagar registro com req.params.id negativo', async() => {
         const resposta = await testServer
-            .get('/pessoas/-2')
+            .delete('/clientes/-1')
             .send()
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)

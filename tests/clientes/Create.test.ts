@@ -32,6 +32,7 @@ describe('Clientes - Create', () => {
         const res3 = await testServer.post('/logradouros')
             .send({
                 idPlaceType: tipoLogradouro,
+                idCity: municipio,
                 name: 'das Nações',
             })
         
@@ -40,7 +41,6 @@ describe('Clientes - Create', () => {
         const res4 = await testServer.post('/enderecos')
             .send({
                 idPublicPlace: logradouro,
-                idCity: municipio,
                 number: 75,
                 neighborhood: 'Conjunto Habitacional Dona Flor'
             })
@@ -56,7 +56,7 @@ describe('Clientes - Create', () => {
                 email: 'ttrgoncalves@gmail.com',
                 phoneNumber: '(41) 9 9909-8911',
                 whatsappNumber: '(41) 9 9909-8911',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc',
             })
         
@@ -69,12 +69,85 @@ describe('Clientes - Create', () => {
             .send({
                 idPessoa: pessoa,
                 genderId: 'Homem Heterossexual',
-                dateOfBirth: new Date(1983, 8, 16)
+                dateOfBirth: Date.parse(new Date(1983, 8, 16).toString())
             })
 
         expect(resposta.statusCode).toEqual(StatusCodes.CREATED)
         expect(typeof resposta.body.msg).toEqual('string')
         expect(typeof resposta.body.content).toEqual('number')
     })
-    
+
+    it('Tenta criar um novo cliente com uma pessoa já cadastrada com cliente', async () => {
+
+        const resposta = await testServer.post('/clientes')
+            .send({
+                idPessoa: pessoa,
+                genderId: 'Mulher Transsexual',
+                dateOfBirth: Date.parse(new Date(1995, 10, 23).toString())
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
+    })
+
+    it('Tenta criar registro com idPessoa = 0', async () => {
+
+        const resposta = await testServer.post('/clientes')
+            .send({
+                idPessoa: 0,
+                genderId: 'Mulher Transsexual',
+                dateOfBirth: Date.parse(new Date(1995, 10, 23).toString())
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.body.idPessoa')
+    })
+
+    it('Tenta criar registro com idPessoa sendo negativo', async () => {
+
+        const resposta = await testServer.post('/clientes')
+            .send({
+                idPessoa: -1,
+                genderId: 'Mulher Transsexual',
+                dateOfBirth: Date.parse(new Date(1995, 10, 23).toString())
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.body.idPessoa')
+    })
+
+    it('Tenta criar registro com idPessoa sendo uma string', async () => {
+
+        const resposta = await testServer.post('/clientes')
+            .send({
+                idPessoa: 'Deborah',
+                genderId: 'Mulher Transsexual',
+                dateOfBirth: Date.parse(new Date(1995, 10, 23).toString())
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.body.idPessoa')
+    })
+
+    it('Tenta criar um registro com idPessoa invalido', async () => {
+
+        const resposta = await testServer.post('/clientes')
+            .send({
+                idPessoa: 999,
+                genderId: 'Mulher Transsexual',
+                dateOfBirth: Date.parse(new Date(1995, 10, 23).toString())
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
+        expect(resposta.body).toHaveProperty('errors.default')
+    })
+
+    it('Tenta criar registro vazio, ou seja, enviando um objeto vazio', async () => {
+
+        const resposta = await testServer.post('/clientes')
+            .send({})
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.body')
+    })
 })

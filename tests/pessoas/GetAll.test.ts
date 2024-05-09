@@ -55,7 +55,7 @@ describe('Enderecos - GetAll', () =>{
                 email: 'upaschetto@gmail.com',
                 phoneNumber: '(41)8 8888-8888',
                 whatsappNumber: '(41)8 8888-8888',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
 
@@ -69,7 +69,7 @@ describe('Enderecos - GetAll', () =>{
                 email: 'ghonorato@gmail.com',
                 phoneNumber: '(41)7 7777-7777',
                 whatsappNumber: '(41)7 7777-7777',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
 
@@ -81,7 +81,7 @@ describe('Enderecos - GetAll', () =>{
                 email: 'fpincel@gmail.com',
                 phoneNumber: '(41)6 6666-6666',
                 whatsappNumber: '(41)6 6666-6666',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
     })

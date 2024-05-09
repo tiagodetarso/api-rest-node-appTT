@@ -12,7 +12,7 @@ export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
         idPessoa: yup.number().moreThan(0).required(),
         genderId: yup.string().optional(),
-        dateOfBirth: yup.date().required(),
+        dateOfBirth: yup.number().integer().moreThan(0).required(),
     }))
 }))
 

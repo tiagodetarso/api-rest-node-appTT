@@ -56,7 +56,7 @@ describe('Pessoas - Create', () => {
                 email: 'ttrgoncalves@gmail.com',
                 phoneNumber: '(41)9 9909-8911',
                 whatsappNumber: '(41)9 9909-8911',
-                registrationDate: new Date().toString(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
         
@@ -75,7 +75,7 @@ describe('Pessoas - Create', () => {
                 email: 'ttrgoncalves@gmail.com',
                 phoneNumber: '(41) 9 9909-8888',
                 whatsappNumber: '(41) 9 9909-888',
-                registrationDate: new Date().toString(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc',
             })
         
@@ -93,7 +93,7 @@ describe('Pessoas - Create', () => {
                 email: 'titarsogmail.com',
                 phoneNumber: '(41) 9 9909-8888',
                 whatsappNumber: '(41) 9 9909-888',
-                registrationDate:new Date().toString(),
+                registrationDate:Date.parse(new Date().toString()),
                 password: '123abc',
             })
         
@@ -103,7 +103,7 @@ describe('Pessoas - Create', () => {
         expect(resposta.body).toHaveProperty('errors.body.email')
     })
 
-    it('Tenta criar um registro com phoneNumber e whatsappNumber contendo menos de 10 caracteres, com date sendo undefined e password contendo menos de 4 caracteres ', async () => {
+    it('Tenta criar um registro com phoneNumber e whatsappNumber contendo menos de 10 caracteres, com registrationDate sendo string e password contendo menos de 4 caracteres ', async () => {
 
         const resposta = await testServer.post('/cadastrar')
             .send({
@@ -113,7 +113,7 @@ describe('Pessoas - Create', () => {
                 email: 'titarso@gmail.com',
                 phoneNumber: '999098888',
                 whatsappNumber: '99909888',
-                registrationDate: undefined,
+                registrationDate: new Date().toString(),
                 password: '123',
             })
         
@@ -134,7 +134,7 @@ describe('Pessoas - Create', () => {
                 email: 't@m.com',
                 phoneNumber: '(41) 9 9909-8888',
                 whatsappNumber: '(41) 9 9909-888',
-                registrationDate: new Date().toString(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc',
             })
         
@@ -154,7 +154,7 @@ describe('Pessoas - Create', () => {
                 email: 'titarso@gmail.com',
                 phoneNumber: '( 41 ) 9 9909-8888',
                 whatsappNumber: '( 41 ) 9 9909-8888',
-                registrationDate: new Date().toString(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: 'euduvidomuitovoceadivinharessasenhaaquiseufdp',
             })
         
@@ -174,7 +174,7 @@ describe('Pessoas - Create', () => {
                 email: 'titarso@gmail.com',
                 phoneNumber: '(41) 9 9909-8888',
                 whatsappNumber: '(41) 9 9909-888',
-                registrationDate: new Date().toString(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc',
             })
         
@@ -192,7 +192,7 @@ describe('Pessoas - Create', () => {
                 email: 'titarso@gmail.com',
                 phoneNumber: '(41) 9 9909-8888',
                 whatsappNumber: '(41) 9 9909-888',
-                registrationDate: new Date().toString(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc',
             })
         
@@ -210,7 +210,7 @@ describe('Pessoas - Create', () => {
                 email: 'titarso@gmail.com',
                 phoneNumber: '(41) 9 9909-8888',
                 whatsappNumber: '(41) 9 9909-888',
-                registrationDate: new Date().toString(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc',
             })
         

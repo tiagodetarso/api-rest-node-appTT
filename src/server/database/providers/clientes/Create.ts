@@ -7,11 +7,10 @@ export const create = async (cliente: Omit<ICliente, 'id'>): Promise<Number | Er
     try {
         const [{count}] = await Knex(ETableNames.cliente)
             .where('idPessoa', '=', cliente.idPessoa)
-            .andWhere('dateOfBirth', '=', cliente.dateOfBirth)
             .count<[{ count: number }]>('* as count')
 
         if (count > 0) {
-            return new Error ('Esta pessoa já esta cadastrada como cliente já está cadastrado.')
+            return new Error ('Esta pessoa já esta cadastrada como cliente.')
         }
 
         const [result] = await Knex(ETableNames.cliente)

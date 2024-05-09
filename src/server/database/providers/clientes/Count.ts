@@ -2,24 +2,44 @@ import { ETableNames } from '../../ETableNames'
 import { Knex } from '../../knex'
 
 
-export const count = async (filterIdPessoa = 0, filterDateOfBirth = new Date(1983,6,16)): Promise<number | Error> => {
+export const count = async (filterIdPessoa = 0, filterDateOfBirthLowerLimit = 0, filterDateOfBirthHigherLimit = 0): Promise<number | Error> => {
     try {
         let count
-        if (filterIdPessoa === 0 && filterDateOfBirth === new Date(1983,6,16)) {
+        if (filterIdPessoa === 0 && filterDateOfBirthLowerLimit === 0 && filterDateOfBirthHigherLimit === 0) {
             [{ count }] = await Knex(ETableNames.cliente)
                 .count<[{ count: number}]>('* as count')
-        } else if (filterIdPessoa === 0) {
+        } else if (filterIdPessoa === 0 && filterDateOfBirthLowerLimit === 0) {
             [{ count }] = await Knex(ETableNames.cliente)
-                .where('dateOfBirth', '=', filterDateOfBirth)
+                .where('dateOfBirth', '<=', filterDateOfBirthHigherLimit)
                 .count<[{ count: number}]>('* as count')
-        } else if (filterDateOfBirth === new Date(1983,6,16)) {
+        } else if (filterIdPessoa === 0 && filterDateOfBirthHigherLimit === 0) {
+            [{ count }] = await Knex(ETableNames.cliente)
+                .where('dateOfBirth', '>=', filterDateOfBirthLowerLimit)
+                .count<[{ count: number}]>('* as count')
+        } else if (filterDateOfBirthLowerLimit === 0 && filterDateOfBirthHigherLimit === 0){
             [{ count }] = await Knex(ETableNames.cliente)
                 .where('idPessoa', '=', filterIdPessoa)
+                .count<[{ count: number}]>('* as count')
+        } else if (filterIdPessoa === 0){
+            [{ count }] = await Knex(ETableNames.cliente)
+                .where('dateOfBirth', '>=', filterDateOfBirthLowerLimit)
+                .andWhere('dateOfBirth', '<=', filterDateOfBirthHigherLimit)
+                .count<[{ count: number}]>('* as count')
+        } else if (filterDateOfBirthLowerLimit === 0){
+            [{ count }] = await Knex(ETableNames.cliente)
+                .where('idPessoa', '=', filterIdPessoa)
+                .andWhere('dateOfBirth', '<=', filterDateOfBirthHigherLimit)
+                .count<[{ count: number}]>('* as count')
+        } else if (filterDateOfBirthHigherLimit === 0){
+            [{ count }] = await Knex(ETableNames.cliente)
+                .where('idPessoa', '=', filterIdPessoa)
+                .andWhere('dateOfBirth', '>=', filterDateOfBirthLowerLimit)
                 .count<[{ count: number}]>('* as count')
         } else {
             [{ count }] = await Knex(ETableNames.cliente)
                 .where('idPessoa', '=', filterIdPessoa)
-                .andWhere('dateOfBirth', '=', filterDateOfBirth)
+                .andWhere('dateOfBirth', '>=', filterDateOfBirthLowerLimit)
+                .andWhere('dateOfBirth', '<=', filterDateOfBirthHigherLimit)
                 .count<[{ count: number}]>('* as count')
         }
             

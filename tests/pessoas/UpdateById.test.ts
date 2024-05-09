@@ -9,7 +9,8 @@ describe('Enderecos - UpdateById', () =>{
     let logradouro: number | undefined = undefined
     let endereco: number | undefined = undefined
     let pessoa: number | undefined = undefined
-    let dataData: Date | undefined = undefined
+    let data: Date | undefined = undefined
+    let dataString: string | undefined = undefined
 
     beforeAll( async() => {
         //cria municipio
@@ -56,7 +57,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
 
@@ -65,7 +66,8 @@ describe('Enderecos - UpdateById', () =>{
 
     it('Atualiza registro', async() => {
 
-        dataData = new Date()
+        data = new Date()
+        dataString = data.toString()
         const resposta = await testServer
             .put(`/pessoas/${pessoa}`)
             .send({
@@ -75,7 +77,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'hsimpsom@gmail.com',
                 phoneNumber: '(44)9 8888-8888',
                 whatsappNumber: '(44)9 8888-8888',
-                registrationDate: dataData,
+                registrationDate: Date.parse(dataString),
                 password: 'abc123'
             })
         
@@ -96,7 +98,7 @@ describe('Enderecos - UpdateById', () =>{
         expect(resVerificar.body.email).toEqual('hsimpsom@gmail.com')
         expect(resVerificar.body.phoneNumber).toEqual('(44)9 8888-8888')
         expect(resVerificar.body.whatsappNumber).toEqual('(44)9 8888-8888')
-        expect(new Date(resVerificar.body.registrationDate)).toEqual(dataData)
+        expect(resVerificar.body.registrationDate).toEqual(Date.parse(dataString))
         expect(resVerificar.body.password).toEqual('abc123')
     })
 
@@ -111,7 +113,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
         
@@ -130,7 +132,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'b@ml.co',
                 phoneNumber: '999999999',
                 whatsappNumber: '999999999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123'
             })
         
@@ -154,7 +156,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguelagmail.com',
                 phoneNumber: '(41)999 9999-9999',
                 whatsappNumber: '(41)999 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc456def789ghijkl'})
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
@@ -166,7 +168,7 @@ describe('Enderecos - UpdateById', () =>{
         expect(resposta.body).toHaveProperty('errors.body.password')
     })
 
-    it('Tenta atualizar registro com resgistrationDate undefined', async() => {
+    it('Tenta atualizar registro com resgistrationDate do tipo string', async() => {
 
         const resposta = await testServer
             .put(`/pessoas/${pessoa}`)
@@ -177,7 +179,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: undefined,
+                registrationDate: new Date().toString(),
                 password: '123abc'
             })
         
@@ -197,7 +199,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
         
@@ -216,7 +218,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
         
@@ -235,7 +237,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
         
@@ -253,7 +255,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
         
@@ -272,7 +274,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
         
@@ -291,7 +293,7 @@ describe('Enderecos - UpdateById', () =>{
                 email: 'brguela@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
         

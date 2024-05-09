@@ -7,7 +7,7 @@ export interface IPessoa {
     email: string
     phoneNumber?: string
     whatsappNumber:string
-    registrationDate: string
+    registrationDate: number
     password: string
 }
 

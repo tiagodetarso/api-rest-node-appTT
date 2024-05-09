@@ -55,7 +55,7 @@ describe('Enderecos - DeleteById', () => {
                 email: 'fudetal@gmail.com',
                 phoneNumber: '(41)9 9999-9999',
                 whatsappNumber: '(41)9 9999-9999',
-                registrationDate: new Date().toString(),
+                registrationDate: Date.parse(new Date().toString()),
                 password: '123abc'
             })
 
