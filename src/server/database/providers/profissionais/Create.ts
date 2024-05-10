@@ -8,11 +8,10 @@ export const create = async (profissional: Omit<IProfissional, 'id'>): Promise<N
         const [{count}] = await Knex(ETableNames.profissional)
             .where('idPessoa', '=', profissional.idPessoa)
             .andWhere('idProfessionalTitle', '=', profissional.idProfessionalTitle)
-            .andWhere('isActive', '=', profissional.isActive)
             .count<[{ count: number }]>('* as count')
 
         if (count > 0) {
-            return new Error ('Esta pessoa já esta cadastrada como profissional.')
+            return new Error ('Esta pessoa já esta cadastrada com este título profissional.')
         }
 
         const [result] = await Knex(ETableNames.profissional)

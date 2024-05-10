@@ -18,6 +18,10 @@ export async function up(knex: Knex) {
                 .references('id').inTable(ETableNames.tituloProfissional)
                 .onUpdate('CASCADE')
                 .onDelete('RESTRICT')
+            table.bigInteger('serviceAddress').index().notNullable()
+                .references('id').inTable(ETableNames.endereco)
+                .onUpdate('CASCADE')
+                .onDelete('RESTRICT')
 
             table.comment('Tabela usada para armazenar os profissionais cadastrados.')
         })

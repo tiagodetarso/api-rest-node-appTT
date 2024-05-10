@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { testServer } from '../jest.setup'
 
 
-describe('Profissionais - Create', () => {
+describe('Enderecos - UpdateById', () =>{
 
     let municipio: number | undefined = undefined
     let tipoLogradouro: number | undefined = undefined
@@ -13,6 +13,7 @@ describe('Profissionais - Create', () => {
     let pessoa2: number | undefined = undefined
     let tituloProfissional: number | undefined = undefined
     let tituloProfissional2: number | undefined = undefined
+    let profissional: number | undefined = undefined
 
     beforeAll( async() => {
         //cria municipio
@@ -105,41 +106,48 @@ describe('Profissionais - Create', () => {
             })
         
         tituloProfissional2 = res9.body.content
-    })
 
-    it('Cria registro', async () => {
-
-        const resposta = await testServer.post('/profissionais')
+        const res10 = await testServer.post('/profissionais')
             .send({
                 idPessoa: pessoa,
                 idProfessionalTitle: tituloProfissional,
-                serviceAddress: endereco2,
+                serviceAddress: endereco,
                 isActive: true
             })
 
-        expect(resposta.statusCode).toEqual(StatusCodes.CREATED)
-        expect(typeof resposta.body.msg).toEqual('string')
-        expect(typeof resposta.body.content).toEqual('number')
+        profissional = res10.body.content
     })
 
-    it('Cria registro com mesma idPessoa porém idProfessionalTitle diferente', async () => {
+    it('Atualiza registro', async() => {
 
-        const resposta = await testServer.post('/profissionais')
+        const resposta = await testServer
+            .put(`/profissionais/${profissional}`)
             .send({
-                idPessoa: pessoa,
+                idPessoa: pessoa2,
                 idProfessionalTitle: tituloProfissional2,
                 serviceAddress: endereco2,
-                isActive: true
+                isActive: false
             })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.OK)
+        expect(resposta.body).toHaveProperty('msg')
+        expect(typeof(resposta.body.msg)).toEqual('string')
 
-        expect(resposta.statusCode).toEqual(StatusCodes.CREATED)
-        expect(typeof resposta.body.msg).toEqual('string')
-        expect(typeof resposta.body.content).toEqual('number')
+        const resVerificar = await testServer
+            .get(`/profissionais/${profissional}`)
+            .send()
+        
+        expect(resVerificar.statusCode).toEqual(StatusCodes.OK)
+        expect(resVerificar.body.idPessoa).toEqual(pessoa2)
+        expect(resVerificar.body.idProfessionalTitle).toEqual(tituloProfissional2)
+        expect(resVerificar.body.serviceAddress).toEqual(endereco2)
+        expect(resVerificar.body.isActive).toEqual(Number(false))
     })
 
-    it('Tenta criar um novo profissional com uma pessoa já cadastrada como profissional com o mesmo título profissional', async () => {
+    it('Tenta atualizar registro que não existe', async() => {
 
-        const resposta = await testServer.post('/profissionais')
+        const resposta = await testServer
+            .put('/profissionais/999')
             .send({
                 idPessoa: pessoa,
                 idProfessionalTitle: tituloProfissional,
@@ -151,61 +159,29 @@ describe('Profissionais - Create', () => {
         expect(resposta.body).toHaveProperty('errors.default')
     })
 
-    it('Tenta criar registro com idPessoa, idProfessionalTitle e serviceAddress iguais a 0', async () => {
+    it('Tenta atualizar registro com isActive do tipo string', async() => {
 
-        const resposta = await testServer.post('/profissionais')
+        const resposta = await testServer
+            .put(`/profissionais/${profissional}`)
             .send({
-                idPessoa: 0,
-                idProfessionalTitle: 0,
-                serviceAddress:0,
-                isActive: true
+                idPessoa: pessoa,
+                idProfessionalTitle: tituloProfissional,
+                serviceAddress: endereco,
+                isActive: 't'
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(resposta.body).toHaveProperty('errors.body.idPessoa')
-        expect(resposta.body).toHaveProperty('errors.body.idProfessionalTitle')
-        expect(resposta.body).toHaveProperty('errors.body.serviceAddress')
+        expect(resposta.body).toHaveProperty('errors.body.isActive')
     })
 
-    it('Tenta criar registro com idPessoa, idProfessionalTitle e serviceAddress sendo negativos', async () => {
+    it('Tenta atualizar registro com idPessoa inexistente', async() => {
 
-        const resposta = await testServer.post('/profissionais')
-            .send({
-                idPessoa: -1,
-                idProfessionalTitle: -1,
-                serviceAddress: -1,
-                isActive: true
-            })
-        
-        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(resposta.body).toHaveProperty('errors.body.idPessoa')
-        expect(resposta.body).toHaveProperty('errors.body.idProfessionalTitle')
-        expect(resposta.body).toHaveProperty('errors.body.serviceAddress')
-    })
-
-    it('Tenta criar registro com idPessoa, idProfessionalTitle e serviceAddress sendo strings', async () => {
-
-        const resposta = await testServer.post('/profissionais')
-            .send({
-                idPessoa: 'Arlindo',
-                idProfessionalTitle: 'Psicólogo',
-                serviceAddress: 'Praia Central, 250',
-                isActive: true
-            })
-        
-        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(resposta.body).toHaveProperty('errors.body.idPessoa')
-        expect(resposta.body).toHaveProperty('errors.body.idProfessionalTitle')
-        expect(resposta.body).toHaveProperty('errors.body.serviceAddress')
-    })
-
-    it('Tenta criar um registro com idPessoa invalido', async () => {
-
-        const resposta = await testServer.post('/profissionais')
+        const resposta = await testServer
+            .put(`/profissionais/${profissional}`)
             .send({
                 idPessoa: 999,
                 idProfessionalTitle: tituloProfissional,
-                serviceAddress: endereco2,
+                serviceAddress: endereco,
                 isActive: true
             })
         
@@ -213,9 +189,10 @@ describe('Profissionais - Create', () => {
         expect(resposta.body).toHaveProperty('errors.default')
     })
 
-    it('Tenta criar um registro com idProfessionalTitle invalido', async () => {
+    it('Tenta atualizar registro com idProfessionalTitle inexistente', async() => {
 
-        const resposta = await testServer.post('/profissionais')
+        const resposta = await testServer
+            .put(`/profissionais/${profissional}`)
             .send({
                 idPessoa: pessoa,
                 idProfessionalTitle: 999,
@@ -226,10 +203,10 @@ describe('Profissionais - Create', () => {
         expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
         expect(resposta.body).toHaveProperty('errors.default')
     })
+    it('Tenta atualizar registro com serviceAddress inexistente', async() => {
 
-    it('Tenta criar um registro com serviceAddress invalido', async () => {
-
-        const resposta = await testServer.post('/profissionais')
+        const resposta = await testServer
+            .put(`/profissionais/${profissional}`)
             .send({
                 idPessoa: pessoa,
                 idProfessionalTitle: tituloProfissional,
@@ -240,27 +217,78 @@ describe('Profissionais - Create', () => {
         expect(resposta.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
         expect(resposta.body).toHaveProperty('errors.default')
     })
+    
+    it('Tenta atualizar registro com id igual a zero', async() => {
 
-    it('Tenta criar um registro com isActive não sendo boolean', async () => {
-
-        const resposta = await testServer.post('/profissionais')
+        const resposta = await testServer
+            .put('/profissionais/0')
             .send({
-                idPessoa: pessoa2,
-                idProfessionalTitle: tituloProfissional2,
-                serviceAddress: endereco2,
-                isActive: 'ativo'
+                idPessoa: pessoa,
+                idProfessionalTitle: tituloProfissional,
+                serviceAddress: endereco,
+                isActive: true
             })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(resposta.body).toHaveProperty('errors.body.isActive')
+        expect(resposta.body).toHaveProperty('errors.params.id')
     })
 
-    it('Tenta criar registro vazio, ou seja, enviando um objeto vazio', async () => {
+    it('Tenta atualizar registro sem id', async() => {
 
-        const resposta = await testServer.post('/profissionais')
-            .send({})
+        const resposta = await testServer
+            .put('/profissionais')
+            .send({
+                idPessoa: pessoa,
+                idProfessionalTitle: tituloProfissional,
+                serviceAddress: endereco,
+                isActive: true
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.NOT_FOUND)
+    })
+
+    it('Tenta atualizar registro com id não inteiro com ponto', async() => {
+
+        const resposta = await testServer
+            .put('/profissionais/1.1')
+            .send({
+                idPessoa: pessoa,
+                idProfessionalTitle: tituloProfissional,
+                serviceAddress: endereco,
+                isActive: true
+            })
         
         expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(resposta.body).toHaveProperty('errors.body')
+        expect(resposta.body).toHaveProperty('errors.params.id')
+    })
+
+    it('Tenta atualizar registro com id não inteiro com vírgula', async() => {
+
+        const resposta = await testServer
+            .put('/profissionais/1,1')
+            .send({
+                idPessoa: pessoa,
+                idProfessionalTitle: tituloProfissional,
+                serviceAddress: endereco,
+                isActive: true
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.params.id')
+    })
+
+    it('Tenta atualizar registro com id negativo', async() => {
+
+        const resposta = await testServer
+            .put('/profissionais/-1')
+            .send({
+                idPessoa: pessoa,
+                idProfessionalTitle: tituloProfissional,
+                serviceAddress: endereco,
+                isActive: true
+            })
+        
+        expect(resposta.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(resposta.body).toHaveProperty('errors.params.id')
     })
 })

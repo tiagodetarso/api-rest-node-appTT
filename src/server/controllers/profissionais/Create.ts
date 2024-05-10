@@ -11,8 +11,9 @@ interface IBodyProps extends Omit<IProfissional, 'id'> {}
 
 export const createValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
-        idPessoa: yup.number().moreThan(0).required(),
-        idProfessionalTitle: yup.number().moreThan(0).required(),
+        idPessoa: yup.number().integer().moreThan(0).required(),
+        idProfessionalTitle: yup.number().integer().moreThan(0).required(),
+        serviceAddress: yup.number().integer().moreThan(0).required(),
         isActive: yup.boolean().required(),
     }))
 }))

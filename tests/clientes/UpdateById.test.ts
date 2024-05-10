@@ -132,7 +132,7 @@ describe('Enderecos - UpdateById', () =>{
     it('Tenta atualizar registro com dateOfBirth do tipo string', async() => {
 
         const resposta = await testServer
-            .put(`/clientes/${pessoa}`)
+            .put(`/clientes/${cliente}`)
             .send({
                 idPessoa: pessoa,
                 genderId: 'Homem Heterossexual',
@@ -146,7 +146,7 @@ describe('Enderecos - UpdateById', () =>{
     it('Tenta atualizar registro com idPessoa inexistente', async() => {
 
         const resposta = await testServer
-            .put(`/clientes/${pessoa}`)
+            .put(`/clientes/${cliente}`)
             .send({
                 idPessoa: 999,
                 genderId: 'Homem Heterossexual',
