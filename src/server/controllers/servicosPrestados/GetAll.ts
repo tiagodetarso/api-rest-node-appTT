@@ -31,7 +31,7 @@ export const getAllValidation = validation((getSchema) => ({
 
 export const getAll = async (req: Request<{},{},{}, IQueryProps>, res: Response) => {
 
-    const result = await ServicosPrestadosProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filterIdServico || 0, req.query.filterIdProfessional || 0, req.query.filterLowerPrice || 0, req.query.filterHigherPrice || 5000, Number(req.query.id))
+    const result = await ServicosPrestadosProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filterIdServico || 0, req.query.filterIdProfessional || 0, req.query.filterLowerPrice || 1, req.query.filterHigherPrice || 5000, Number(req.query.id))
     const count = await ServicosPrestadosProvider.count(<number>req.query.filterIdServico, <number>req.query.filterIdProfessional, <number>req.query.filterLowerPrice, <number>req.query.filterHigherPrice)
 
     if (result instanceof Error) {

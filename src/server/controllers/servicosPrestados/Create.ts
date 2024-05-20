@@ -14,7 +14,7 @@ export const createValidation = validation((getSchema) => ({
         idServico: yup.number().moreThan(0).integer().required(),
         idProfessional: yup.number().moreThan(0).integer().required(),
         specificDescription: yup.string().min(5).max(200).optional(),
-        price: yup.number().moreThan(0).required(),
+        price: yup.number().required().min(0),
     }))
 }))
 

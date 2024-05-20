@@ -8,7 +8,7 @@ export async function up(knex: Knex) {
         .schema
         .createTable(ETableNames.servicoPrestado, table => {
             table.bigIncrements('id').primary().index()
-            table.string('specificDescription', 300).checkLength('<=', 300).index().notNullable()
+            table.string('specificDescription', 200).checkLength('<=', 200).index()
             table.double('price').notNullable()
 
             table.bigInteger('idServico').index().notNullable()
