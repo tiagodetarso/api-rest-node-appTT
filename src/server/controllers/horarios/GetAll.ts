@@ -10,7 +10,7 @@ interface IQueryProps {
     page?: yup.Maybe<number | undefined>
     limit?: yup.Maybe<number | undefined>
     filterIdProfessional?: yup.Maybe<number | undefined>
-    filterSchedulingTime?: yup.Maybe<Date | undefined>
+    filterSchedulingTime?: yup.Maybe<number | undefined>
     filterIsAvaiable?: yup.Maybe<boolean | undefined>
 }
 
@@ -19,7 +19,7 @@ const querySchema = yup.object().shape({
     limit: yup.number().notRequired().moreThan(0).integer(),
     id: yup.number().integer().notRequired().default(0),
     filterIdProfessional: yup.number().notRequired().moreThan(0).integer(),
-    filterSchedulingTime: yup.date().notRequired(),
+    filterSchedulingTime: yup.number().integer().moreThan(0).notRequired(),
     filterIsAvaiable: yup.boolean()
 })
 
@@ -29,8 +29,8 @@ export const getAllValidation = validation((getSchema) => ({
 
 export const getAll = async (req: Request<{},{},{}, IQueryProps>, res: Response) => {
 
-    const result = await HorariosProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filterIdProfessional || 0, req.query.filterSchedulingTime || new Date(1983,6,16), req.query.filterIsAvaiable || true, Number(req.query.id))
-    const count = await HorariosProvider.count(<number>req.query.filterIdProfessional, <Date>req.query.filterSchedulingTime, <boolean>req.query.filterIsAvaiable)
+    const result = await HorariosProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filterIdProfessional || 0, req.query.filterSchedulingTime || 0, req.query.filterIsAvaiable || true, Number(req.query.id))
+    const count = await HorariosProvider.count(<number>req.query.filterIdProfessional, <number>req.query.filterSchedulingTime, <boolean>req.query.filterIsAvaiable)
 
     if (result instanceof Error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

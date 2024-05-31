@@ -2,28 +2,28 @@ import { ETableNames } from '../../ETableNames'
 import { Knex } from '../../knex'
 
 
-export const count = async (filterIdProfessional = 0, filterSchedulingTime = new Date(1983,6,16), filterIsAvaiable = true): Promise<number | Error> => {
+export const count = async (filterIdProfessional = 0, filterSchedulingTime = 0, filterIsAvaiable = true): Promise<number | Error> => {
     try {
         let count
-        if (filterIdProfessional === 0 && filterSchedulingTime === new Date(1983,6,16)) {
-            [{ count }] = await Knex(ETableNames.profissional)
+        if (filterIdProfessional === 0 && filterSchedulingTime === 0) {
+            [{ count }] = await Knex(ETableNames.horario)
                 .where('isAvaiable', '=', filterIsAvaiable)
                 .count<[{ count: number}]>('* as count')
         } else if (filterIdProfessional === 0) {
-            [{ count }] = await Knex(ETableNames.profissional)
+            [{ count }] = await Knex(ETableNames.horario)
                 .where('isAvaiable', '=', filterIsAvaiable)
-                .andWhere('dateOfBirth', '=', filterSchedulingTime)
+                .andWhere('schedulingTime', '>=', filterSchedulingTime)
                 .count<[{ count: number}]>('* as count')
-        } else if (filterSchedulingTime === new Date(1983,6,16)) {
-            [{ count }] = await Knex(ETableNames.profissional)
+        } else if (filterSchedulingTime === 0) {
+            [{ count }] = await Knex(ETableNames.horario)
                 .where('isAvaiable', '=', filterIsAvaiable)
-                .andWhere('idPessoa', '=', filterIdProfessional)
+                .andWhere('idProfessional', '=', filterIdProfessional)
                 .count<[{ count: number}]>('* as count')
         } else {
-            [{ count }] = await Knex(ETableNames.profissional)
-                .where('isAvaiable', '=', filterIsAvaiable)
-                .andWhere('idPessoa', '=', filterIdProfessional)
-                .andWhere('dateOfBirth', '=', filterSchedulingTime)
+            [{ count }] = await Knex(ETableNames.horario)
+                .where('isAvaiable', '>=', filterIsAvaiable)
+                .andWhere('idProfessional', '=', filterIdProfessional)
+                .andWhere('schedulingTime', '>=', filterSchedulingTime)
                 .count<[{ count: number}]>('* as count')
         }
             

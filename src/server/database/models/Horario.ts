@@ -6,6 +6,6 @@
 export interface IHorario {
     id:number
     idProfessional: number
-    schedulingTime: Date
+    schedulingTime: number
     isAvaiable: boolean
 }

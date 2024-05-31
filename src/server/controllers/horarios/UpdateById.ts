@@ -15,7 +15,7 @@ interface IBodyProps extends Omit<IHorario, 'id'> { }
 export const updateByIdValidation = validation((getSchema) => ({
     body: getSchema<IBodyProps>(yup.object().shape({
         idProfessional: yup.number().moreThan(0).integer().required(),
-        schedulingTime: yup.date().required(),
+        schedulingTime: yup.number().integer().moreThan(0).required(),
         isAvaiable: yup.boolean().required(),
     })),
     params: getSchema<IParamProps>(yup.object().shape({
