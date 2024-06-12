@@ -8,195 +8,165 @@ export const count = async (filterIdProfessional = 0, filterIdClient = 0, filter
         if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdHorario === 0 && filterIdStatus === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdHorario === 0 && filterIdStatus === 0) {
+        } else if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdHorario === 0 && filterIdStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdHorario === 0 && filterIdPaymentStatus === 0) {
+        } else if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdHorario === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idStatus', '=', filterIdStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdStatus === 0 && filterIdPaymentStatus === 0) {
+        } else if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdStatus === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idHorario', '=', filterIdHorario)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdHorario === 0 && filterIdStatus === 0 && filterIdPaymentStatus === 0) {
+        } else if (filterIdProfessional === 0 && filterIdHorario === 0 && filterIdStatus === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idClient', '=', filterIdClient)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdClient === 0 && filterIdHorario === 0 && filterIdStatus === 0 && filterIdPaymentStatus === 0) {
+        } else if (filterIdClient === 0 && filterIdHorario === 0 && filterIdStatus === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdHorario) {
+        } else if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdHorario) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idStatus', '=', filterIdStatus)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdStatus) {
+        } else if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idHorario', '=', filterIdHorario)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdHorario === 0 && filterIdStatus) {
+        } else if (filterIdProfessional === 0 && filterIdHorario === 0 && filterIdStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idClient', '=', filterIdClient)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdClient === 0 && filterIdHorario === 0 && filterIdStatus) {
+        } else if (filterIdClient === 0 && filterIdHorario === 0 && filterIdStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdPaymentStatus) {
+        } else if (filterIdProfessional === 0 && filterIdClient === 0 && filterIdPaymentStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idHorario', '=', filterIdHorario)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdHorario === 0 && filterIdPaymentStatus) {
+        } else if (filterIdProfessional === 0 && filterIdHorario === 0 && filterIdPaymentStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idClient', '=', filterIdClient)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdClient === 0 && filterIdHorario === 0 && filterIdPaymentStatus) {
+        } else if (filterIdClient === 0 && filterIdHorario === 0 && filterIdPaymentStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdStatus === 0 && filterIdPaymentStatus) {
+        } else if (filterIdProfessional === 0 && filterIdStatus === 0 && filterIdPaymentStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idClient', '=', filterIdClient)
                 .andWhere('idHorario', '=', filterIdHorario)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdClient === 0 && filterIdStatus === 0 && filterIdPaymentStatus) {
+        } else if (filterIdClient === 0 && filterIdStatus === 0 && filterIdPaymentStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idHorario', '=', filterIdHorario)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdHorario === 0 && filterIdStatus === 0 && filterIdPaymentStatus) {
+        } else if (filterIdHorario === 0 && filterIdStatus === 0 && filterIdPaymentStatus) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idClient', '=', filterIdClient)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdClient === 0) {
+        } else if (filterIdProfessional === 0 && filterIdClient === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idHorario', '=', filterIdHorario)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdHorario === 0) {
+        } else if (filterIdProfessional === 0 && filterIdHorario === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idClient', '=', filterIdClient)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdStatus === 0) {
+        } else if (filterIdProfessional === 0 && filterIdStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idHorario', '=', filterIdHorario)
                 .andWhere('idClient', '=', filterIdClient)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0 && filterIdPaymentStatus === 0) {
+        } else if (filterIdProfessional === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idHorario', '=', filterIdHorario)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .andWhere('idClient', '=', filterIdClient)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdClient === 0 && filterIdHorario === 0) {
+        } else if (filterIdClient === 0 && filterIdHorario === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdClient === 0 && filterIdStatus === 0) {
+        } else if (filterIdClient === 0 && filterIdStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idHorario', '=', filterIdHorario)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdClient === 0 && filterIdPaymentStatus === 0) {
+        } else if (filterIdClient === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idHorario', '=', filterIdHorario)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdHorario === 0 && filterIdStatus === 0) {
+        } else if (filterIdHorario === 0 && filterIdStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idClient', '=', filterIdClient)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdHorario === 0 && filterIdPaymentStatus === 0) {
+        } else if (filterIdHorario === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idClient', '=', filterIdClient)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdStatus === 0 && filterIdPaymentStatus === 0) {
+        } else if (filterIdStatus === 0 && filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idClient', '=', filterIdClient)
                 .andWhere('idHorario', '=', filterIdHorario)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdProfessional === 0) {
+        } else if (filterIdProfessional === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idClient', '=', filterIdClient)
                 .andWhere('idHorario', '=', filterIdHorario)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdClient === 0) {
+        } else if (filterIdClient === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idHorario', '=', filterIdHorario)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdHorario === 0) {
+        } else if (filterIdHorario === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idClient', '=', filterIdClient)
                 .andWhere('idStatus', '=', filterIdStatus)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdStatus === 0) {
+        } else if (filterIdStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idClient', '=', filterIdClient)
                 .andWhere('idHorario', '=', filterIdHorario)
                 .andWhere('idPaymentStatus', '=', filterIdPaymentStatus)
                 .count<[{ count: number}]>('* as count')
-        }
-        if (filterIdPaymentStatus === 0) {
+        } else if (filterIdPaymentStatus === 0) {
             [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idClient', '=', filterIdClient)
@@ -204,7 +174,7 @@ export const count = async (filterIdProfessional = 0, filterIdClient = 0, filter
                 .andWhere('idStatus', '=', filterIdStatus)
                 .count<[{ count: number}]>('* as count')
         } else {
-            [{ count }] = await Knex(ETableNames.pessoa)
+            [{ count }] = await Knex(ETableNames.agendamento)
                 .where('idProfessional', '=', filterIdProfessional)
                 .andWhere('idClient', '=', filterIdClient)
                 .andWhere('idHorario', '=', filterIdHorario)

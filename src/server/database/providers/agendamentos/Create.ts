@@ -10,14 +10,13 @@ export const create = async (agendamento: Omit<IAgendamento, 'id'>): Promise<Num
             .andWhere ('idHorario', '=', agendamento.idHorario)
             .count<[{ count: number }]>('* as count')
 
-
         if (count > 0) {
             return new Error ('Este agendamento já consta no sistema.')
         }
 
         const [result] = await Knex(ETableNames.agendamento)
             .insert(agendamento, ['id'])
-
+        
         if (typeof result === 'object') {
             return result.id
         } else if ( typeof result === 'number' ){

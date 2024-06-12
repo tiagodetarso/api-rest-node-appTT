@@ -8,7 +8,7 @@ export async function up(knex: Knex) {
         .schema
         .createTable(ETableNames.agendamento, table => {
             table.bigIncrements('id').primary().index()
-            table.double('professionalAvaliation')
+            table.integer('professionalAvaliation')
 
             table.bigInteger('idProfessional').index().notNullable()
                 .references('id').inTable(ETableNames.profissional)
@@ -20,6 +20,10 @@ export async function up(knex: Knex) {
                 .onDelete('RESTRICT')
             table.bigInteger('idHorario').index().notNullable()
                 .references('id').inTable(ETableNames.horario)
+                .onUpdate('CASCADE')
+                .onDelete('RESTRICT')
+            table.bigInteger('idServicoPrestado').index().notNullable()
+                .references('id').inTable(ETableNames.servicoPrestado)
                 .onUpdate('CASCADE')
                 .onDelete('RESTRICT')
             table.bigInteger('idStatus').index().notNullable()
