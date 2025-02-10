@@ -14,10 +14,6 @@ export async function up(knex: Knex) {
                 .references('id').inTable(ETableNames.municipio)
                 .onUpdate('CASCADE')
                 .onDelete('RESTRICT')
-            table.bigInteger('idPlaceType').index().notNullable()
-                .references('id').inTable(ETableNames.tipoLogradouro)
-                .onUpdate('CASCADE')
-                .onDelete('RESTRICT')
 
             table.comment('Tabela usada para armazenar os logradouros cadastrados.')
         })

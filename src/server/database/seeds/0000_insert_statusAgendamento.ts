@@ -13,16 +13,14 @@ export const seed = async(knex: Knex) => {
 }
 
 const statusAgendamento = [
-    'Agendado (aguardando aceite do profissional)',
+    'Agendado solicitado',
     'Agendamento cancelado pelo profissional',
-    'Agendamento confirmado',
+    'Agendamento confirmado pelo profissional',
     'Agendamento cancelado pelo cliente',
     'Alteração de horário solicitada pelo profissional',
-    'Alteração de horário negada pelo cliente',
-    'Agendamento cancelado pelo profissional',
-    'Alteração de horário aceita pelo cliente',
     'Alteração de horário solicitada pelo cliente',
+    'Alteração de horário negada pelo cliente',
+    'Alteração de horário aceita pelo cliente',
     'Alteração de horário negada pelo profissional',
-    'Agendamento cancelado pelo cliente',
     'Alteração de horário aceita pelo profissional'
 ]
